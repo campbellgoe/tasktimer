@@ -21,9 +21,17 @@ const DragHandle = sortableHandle(() => (
 </Fragment>));
 export default class Task extends Component {
   render(){
+    const pcSeconds = parseInt(this.props.elapsedTime/1000)%(60*25)/(60*25)*100;//25 minutes counter
+    const pcMinutes = parseInt(this.props.elapsedTime/1000)%(60*5)/(60*5)*100;//5 minutes counter
+    const linearGradient = `
+    linear-gradient(90deg, rgba(255,255,0,0.5) ${pcMinutes}%, rgba(255,255,255,0) ${pcMinutes}%, rgba(255,255,255,0) 100%),
+    linear-gradient(90deg, rgb(255,160,80) ${pcSeconds}%, rgb(255,255,255) ${pcSeconds}%, rgb(255,255,255) 100%)
+    `;
     return (
       <li>
-        <div className="task">
+        <div className="task" style={{
+            background: linearGradient
+          }}>
           <DragHandle/>
           <div className="textarea-container">
             <textarea
