@@ -19,6 +19,9 @@ const Layout = (props) => (
         margin: 110px 25%;
         box-sizing: border-box;
       }
+      ul, li {
+        list-style: none;
+      }
       @media only screen and (max-width: 1600px) {
         body {
           margin: 80px 15%;

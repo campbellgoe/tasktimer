@@ -1,6 +1,33 @@
 import Layout from '../components/Layout.js';
 import { Component } from 'react';
 import Task from '../components/Task.js';
+import {
+  SortableContainer,
+  SortableElement,
+  arrayMove
+} from 'react-sortable-hoc';
+const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
+const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer}) => {
+  return (
+    <ul>
+      {tasks.map(({description, elapsedTime, paused, timeLastStarted}, i) => {
+        return (
+          <SortableTask
+          index={i}
+          key={"task_"+i}
+          elapsedTime={elapsedTime}
+          paused={paused}
+          timeLastStarted={timeLastStarted}
+          editDescription={(e)=>editDescription(e,i)}
+          toggleTimer={()=>toggleTimer(i)}
+          >
+            {description}
+          </SortableTask>
+        );
+      })}
+    </ul>
+  );
+});
 class NewTaskButton extends Component {
   render(){
     return (
@@ -57,38 +84,37 @@ export default class App extends Component {
       timeLastStarted: null//this is set to Date.now() when unpaused, and used to calculate total elapsed time.
     }
   }
+  onSortEnd = ({oldIndex, newIndex}) => {
+    this.setState(({tasks}) => ({
+      tasks: arrayMove(tasks, oldIndex, newIndex),
+    }));
+  }
   render(){
     return (<Layout>
-      {this.state.tasks.map(({description, elapsedTime, paused, timeLastStarted}, i) => {
-        return (
-          <Task
-          key={"task_"+i}
-          elapsedTime={elapsedTime}
-          paused={paused}
-          timeLastStarted={timeLastStarted}
-          editDescription={(e)=>{
-            const tasks = [...this.state.tasks];
-            tasks[i].description = e.target.value;
-            this.setState({
-              tasks
-            });
-          }}
-          toggleTimer={()=>{
-            const tasks = [...this.state.tasks];
-            const paused = !tasks[i].paused;
-            tasks[i].paused = paused;
-            if(!paused){
-              tasks[i].timeLastStarted = Date.now();//set last started time to now
-            }
-            this.setState({
-              tasks
-            });
-          }}
-          >
-            {description}
-          </Task>
-        );
-      })}
+      <SortableTasks
+      useDragHandle
+      tasks={this.state.tasks}
+      onSortEnd={this.onSortEnd}
+      editDescription={(e, i)=>{
+        const tasks = [...this.state.tasks];
+        console.log("i:", i);
+        tasks[i].description = e.target.value;
+        this.setState({
+          tasks
+        });
+      }}
+      toggleTimer={(i)=>{
+        const tasks = [...this.state.tasks];
+        const paused = !tasks[i].paused;
+        tasks[i].paused = paused;
+        if(!paused){
+          tasks[i].timeLastStarted = Date.now();//set last started time to now
+        }
+        this.setState({
+          tasks
+        });
+      }}
+      />
       <NewTaskButton onClick={()=>{
         this.setState(({tasks})=>{
           return {
