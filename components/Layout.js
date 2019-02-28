@@ -21,6 +21,7 @@ const Layout = (props) => (
       }
       ul, li {
         list-style: none;
+        padding-left: 0;
       }
       @media only screen and (max-width: 1600px) {
         body {

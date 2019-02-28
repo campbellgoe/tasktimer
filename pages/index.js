@@ -7,10 +7,10 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
-const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer}) => {
+const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize}) => {
   return (
     <ul>
-      {tasks.map(({description, elapsedTime, paused, timeLastStarted}, i) => {
+      {tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea}, i) => {
         return (
           <SortableTask
           index={i}
@@ -20,6 +20,8 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer}) 
           timeLastStarted={timeLastStarted}
           editDescription={(e)=>editDescription(e,i)}
           toggleTimer={()=>toggleTimer(i)}
+          textarea={textarea}
+          editTextareaSize={(w,h)=>editTextareaSize(w,h,i)}
           >
             {description}
           </SortableTask>
@@ -56,21 +58,28 @@ export default class App extends Component {
       tasks: [this.createTask("Task description here", 0)]
     }
   }
-  componentDidMount(){
-    //update the timers every 1 second
-    this.intervalId = setInterval(()=>{
-      const tasks = this.state.tasks.map(({description, elapsedTime, paused, timeLastStarted})=>{
-        if(paused) return {description, elapsedTime, paused, timeLastStarted};
-        return {
-          description,
-          elapsedTime: elapsedTime+(Date.now()-timeLastStarted),
-          paused,
-          timeLastStarted: Date.now()
-        }
-      });
+  updateTaskTimer(doSetState){
+    const tasks = this.state.tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea})=>{
+      if(paused) return {description, elapsedTime, paused, timeLastStarted, textarea};
+      return {
+        description,
+        elapsedTime: elapsedTime+(Date.now()-timeLastStarted),
+        paused,
+        timeLastStarted: Date.now(),
+        textarea
+      }
+    });
+    if(doSetState){
       this.setState({
         tasks
       });
+    }
+    return tasks;
+  }
+  componentDidMount(){
+    //update the timers every 1 second
+    this.intervalId = setInterval(()=>{
+      this.updateTaskTimer(true);
     }, 1000);
   }
   componentWillUnmount(){
@@ -81,7 +90,11 @@ export default class App extends Component {
       description,
       elapsedTime,
       paused: true,
-      timeLastStarted: null//this is set to Date.now() when unpaused, and used to calculate total elapsed time.
+      timeLastStarted: null,//this is set to Date.now() when unpaused, and used to calculate total elapsed time.
+      textarea: {
+        width: "320px",
+        height: "80px"
+      }
     }
   }
   onSortEnd = ({oldIndex, newIndex}) => {
@@ -109,6 +122,23 @@ export default class App extends Component {
         tasks[i].paused = paused;
         if(!paused){
           tasks[i].timeLastStarted = Date.now();//set last started time to now
+        }
+        this.setState({
+          tasks
+        });
+        let t0 = Date.now();
+        const intervalId = setInterval(()=>{
+          this.updateTaskTimer(true);
+          //clear this interval after a minute
+          if(Date.now()-t0 > 1000*60) clearInterval(intervalId);
+        }, 1000);
+
+      }}
+      editTextareaSize={(w,h,i)=>{
+        const tasks = [...this.state.tasks];
+        tasks[i].textarea = {
+          width: w,
+          height: h
         }
         this.setState({
           tasks

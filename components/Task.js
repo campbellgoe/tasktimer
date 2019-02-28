@@ -1,21 +1,24 @@
-import { Component } from 'react';
+import { Fragment, Component } from 'react';
 import parseElapsedTime from '../utils/parseElapsedTime.js';
 import { sortableHandle } from 'react-sortable-hoc';
-const DragHandle = sortableHandle(() => <>
+const DragHandle = sortableHandle(() => (
+  <Fragment>
   <i className="material-icons drag-icon">drag_indicator</i>
   <style jsx>{`
     .drag-icon {
       font-size: 38px;
       position: absolute;
-      margin-left: -20px;
-      height: calc(100% - 38px * 2);
-      transform: translate(0, 50%);
       cursor: grab;
       user-select: none;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      height: 38px;
     }
   `}
   </style>
-</>);
+</Fragment>));
 export default class Task extends Component {
   render(){
     return (
@@ -23,7 +26,17 @@ export default class Task extends Component {
         <div className="task">
           <DragHandle/>
           <div className="textarea-container">
-            <textarea value={this.props.children} onChange={this.props.editDescription}/>
+            <textarea
+              style={{
+                width: this.props.textarea.width,
+                height: this.props.textarea.height
+              }}
+              value={this.props.children}
+              onChange={this.props.editDescription}
+              onMouseUp={(e)=>{
+                this.props.editTextareaSize(e.target.style.width, e.target.style.height);
+              }}
+              />
             <i className="material-icons textarea-resize">arrow_right</i>
           </div>
           <div>
