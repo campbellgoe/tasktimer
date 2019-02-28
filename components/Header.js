@@ -4,6 +4,7 @@ import { withRouter } from 'next/router'
 const Header = ({ children, router, href }) => {
   const isHome = router.pathname === "/";
   const isAbout = router.pathname === "/about";
+  const linearGradient = "linear-gradient(180deg, rgba(0,0,0,1) 80%, rgba(255,255,255,1) 80%, rgba(255,255,255,1) 100%)";
   return (
     <div>
         <Link href="/">
@@ -15,7 +16,7 @@ const Header = ({ children, router, href }) => {
         <style jsx>{
           `
             a {
-              font-family: 'Montserrat Subrayada', sans-serif;
+              font-family: 'Josefin Sans', sans-serif;
               color: #ffffff;
               text-decoration: none;
               font-size: 24px;
@@ -24,16 +25,13 @@ const Header = ({ children, router, href }) => {
               border-radius: 2px;
             }
             a:hover {
-              color: #000000;
-              background-color: #ffffff;
+              background: ${linearGradient};
             }
             #home {
-              background-color: ${isHome ? "#ffffff" : ""};
-              color: ${isHome ? "#000000" : ""};
+              background: ${isHome ? linearGradient : ""};
             }
             #about {
-              background-color: ${isAbout ? "#ffffff" : ""};
-              color: ${isAbout ? "#000000" : ""};
+              background: ${isAbout ? linearGradient : ""};
             }
             div {
               margin-bottom: 80px;

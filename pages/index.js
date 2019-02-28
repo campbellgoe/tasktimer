@@ -1,6 +1,27 @@
 import Layout from '../components/Layout.js';
 import { Component } from 'react';
 import Task from '../components/Task.js';
+class NewTaskButton extends Component {
+  render(){
+    return (
+      <>
+        <i className="material-icons" onClick={this.props.onClick}>add_box</i>
+        <style jsx>{`
+          i {
+            font-size: 42px;
+            user-select: none;
+            cursor: pointer;
+            margin-left: -5px;
+            margin-top: -10px;
+          }
+          i:hover {
+            color: rgb(210, 210, 210);
+          }
+        `}</style>
+      </>
+    );
+  }
+}
 export default class App extends Component {
   constructor(){
     super();
@@ -68,6 +89,13 @@ export default class App extends Component {
           </Task>
         );
       })}
+      <NewTaskButton onClick={()=>{
+        this.setState(({tasks})=>{
+          return {
+            tasks: [...tasks, this.createTask("", 0)]
+          };
+        })
+      }}/>
       <style jsx>{`
 
       `}

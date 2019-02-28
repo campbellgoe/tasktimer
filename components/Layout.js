@@ -9,7 +9,7 @@ const Layout = (props) => (
     <Header />
     {props.children}
     <style jsx global>{`
-      @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Montserrat+Subrayada|Material+Icons');
+      @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Josefin+Sans:700|Material+Icons');
       body {
         font-family: 'Hind Guntur', sans-serif;
         background-color: #000;

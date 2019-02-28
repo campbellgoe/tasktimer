@@ -31,6 +31,7 @@ export default class Task extends Component {
             justify-content: space-between;
             padding: 20px;
             color: black;
+            margin-bottom: 16px;
           }
           .task > div {
             display: flex;
