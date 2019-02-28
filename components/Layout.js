@@ -9,7 +9,7 @@ const Layout = (props) => (
     <Header />
     {props.children}
     <style jsx global>{`
-      @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Montserrat+Subrayada');
+      @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Montserrat+Subrayada|Material+Icons');
       body {
         font-family: 'Hind Guntur', sans-serif;
         background-color: #000;
@@ -17,6 +17,7 @@ const Layout = (props) => (
         line-height: 26px;
         color: #fff;
         margin: 110px 25%;
+        box-sizing: border-box;
       }
       @media only screen and (max-width: 790px) {
         body {
