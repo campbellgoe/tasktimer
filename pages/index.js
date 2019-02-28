@@ -74,6 +74,7 @@ export default class App extends Component {
       this.setState({
         tasks
       });
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
     return tasks;
   }
@@ -81,7 +82,20 @@ export default class App extends Component {
     //update the timers every 1 second
     this.intervalId = setInterval(()=>{
       this.updateTaskTimer(true);
-    }, 1000);
+    }, 100);
+    //load tasks from local storage
+    let localTasks = localStorage.getItem("tasks");
+    try {
+      if(typeof localTasks == 'string') localTasks = JSON.parse(localTasks);
+    } catch(err){
+      localTasks = null;
+    }
+    console.log("local tasks:", localTasks);
+    if(localTasks){
+      this.setState({
+        tasks: localTasks
+      })
+    }
   }
   componentWillUnmount(){
     clearInterval(this.intervalId);
@@ -127,13 +141,6 @@ export default class App extends Component {
         this.setState({
           tasks
         });
-        let t0 = Date.now();
-        const intervalId = setInterval(()=>{
-          this.updateTaskTimer(true);
-          //clear this interval after a minute
-          if(Date.now()-t0 > 1000*60) clearInterval(intervalId);
-        }, 1000);
-
       }}
       editTextareaSize={(w,h,i)=>{
         const tasks = [...this.state.tasks];
