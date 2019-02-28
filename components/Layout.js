@@ -19,9 +19,32 @@ const Layout = (props) => (
         margin: 110px 25%;
         box-sizing: border-box;
       }
-      @media only screen and (max-width: 790px) {
+      @media only screen and (max-width: 1600px) {
+        body {
+          margin: 80px 15%;
+        }
+      }
+      @media only screen and (max-width: 1400px) {
+        body {
+          margin: 80px 200px;
+        }
+      }
+      @media only screen and (max-width: 1200px) {
+        body {
+          margin: 80px 140px;
+        }
+      }
+      @media only screen and (max-width: 1000px) {
+        body {
+          margin: 80px 80px;
+        }
+      }
+      @media only screen and (max-width: 820px) {
         body {
           margin: 80px 32px;
+        }
+        .task {
+          flex-direction: column;
         }
       }
     `}</style>

@@ -38,6 +38,15 @@ const Header = ({ children, router, href }) => {
             div {
               margin-bottom: 80px;
             }
+            @media only screen and (max-width: 360px) {
+              div {
+                display: flex;
+                justify-content: space-between;
+              }
+              a {
+                margin-right: 0;
+              }
+            }
           `
         }</style>
     </div>
