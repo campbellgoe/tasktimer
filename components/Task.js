@@ -29,7 +29,6 @@ export default class Task extends Component {
     const colourTransparent = `rgba(${r},${g},${b},0)`;
     const linearGradient = `
     linear-gradient(180deg, ${colour} calc(100% - 10px), ${colourTransparent} calc(100% - 10px), ${colourTransparent} calc(100% - 20px)),
-    linear-gradient(90deg, rgba(${r},${g},${b},0.5) 0%, rgba(0,0,0,0.5) ${pcMinutes}%, ${colourTransparent} ${pcMinutes}%, ${colourTransparent} 100%),
     linear-gradient(90deg,  ${colour} 0%, rgba(255,156,237,1) ${pcSeconds}%,  ${colour} ${pcSeconds}%,  ${colour} 100%)
     `;
     return (

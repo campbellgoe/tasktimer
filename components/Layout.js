@@ -8,6 +8,9 @@ const Layout = (props) => (
     </Head>
     <Header />
     {props.children}
+    <footer>
+    Copyright &copy; George O. E. Campbell 2019
+    </footer>
     <style jsx global>{`
       @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Josefin+Sans:700|Material+Icons');
       body {
@@ -18,6 +21,16 @@ const Layout = (props) => (
         color: #fff;
         margin: 110px 25%;
         box-sizing: border-box;
+      }
+      footer {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        height: 20px;
+        text-align: right;
+        padding: 5px;
+        background-color: black;
+        border-top-left-radius: 4px;
       }
       ul, li {
         list-style: none;
