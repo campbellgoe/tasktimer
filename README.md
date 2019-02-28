@@ -1,5 +1,7 @@
 # Time Tracker
 
+![Time Tracker](https://github.com/GCDeveloper/timetracker/blob/master/demo.png)
+
 Web app which uses Server-side rendering (SSR) with the help of Next.js and Express,
 and React for Single Page Application (SPA) functionality.
 
