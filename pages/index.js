@@ -7,7 +7,7 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
-const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize}) => {
+const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask}) => {
   return (
     <ul>
       {tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea}, i) => {
@@ -22,6 +22,7 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
           toggleTimer={()=>toggleTimer(i)}
           textarea={textarea}
           editTextareaSize={(w,h)=>editTextareaSize(w,h,i)}
+          deleteTask={()=>deleteTask(i)}
           >
             {description}
           </SortableTask>
@@ -140,6 +141,13 @@ export default class App extends Component {
           width: w,
           height: h
         }
+        this.setState({
+          tasks
+        });
+      }}
+      deleteTask={(i)=>{
+        const tasks = [...this.state.tasks];
+        tasks.splice(i, 1);
         this.setState({
           tasks
         });

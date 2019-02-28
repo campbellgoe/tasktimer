@@ -49,10 +49,27 @@ export default class Task extends Component {
               <i className="material-icons btn-timer">pause</i>
             }
           </div>
+          <i className="material-icons delete-task"
+            onClick={()=>{
+              if(confirm("Are you sure you want to delete this task?")) this.props.deleteTask();
+            }}
+          >delete_forever</i>
         </div>
         <style jsx>{`
           .timer {
             padding-top: 5px;
+          }
+          .delete-task {
+            position: absolute;
+            right: -43px;
+            top: 0;
+            font-size: 38px;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+          }
+          .delete-task:hover {
+            color: rgb(255,100,100);
           }
           .task {
             background-color: #ffffff;
