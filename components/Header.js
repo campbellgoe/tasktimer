@@ -5,6 +5,7 @@ const Header = ({ children, router, href }) => {
   const isHome = router.pathname === "/";
   const isAbout = router.pathname === "/about";
   const linearGradient = "linear-gradient(180deg, rgba(0,0,0,1) 80%, rgba(255,255,255,1) 80%, rgba(255,255,255,1) 100%)";
+  //#72512a golden brown
   return (
     <div>
         <Link href="/">

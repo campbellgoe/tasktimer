@@ -59,6 +59,9 @@ export default class App extends Component {
       tasks: [this.createTask("Task description here", 0)]
     }
   }
+  saveTasks(){
+    localStorage.setItem("tasks", JSON.stringify(this.state.tasks));
+  }
   updateTaskTimer(doSetState){
     const tasks = this.state.tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea})=>{
       if(paused) return {description, elapsedTime, paused, timeLastStarted, textarea};
@@ -74,7 +77,6 @@ export default class App extends Component {
       this.setState({
         tasks
       });
-      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
     return tasks;
   }
@@ -82,6 +84,7 @@ export default class App extends Component {
     //update the timers every 1 second
     this.intervalId = setInterval(()=>{
       this.updateTaskTimer(true);
+      this.saveTasks();
     }, 100);
     //load tasks from local storage
     let localTasks = localStorage.getItem("tasks");
@@ -130,6 +133,7 @@ export default class App extends Component {
         this.setState({
           tasks
         });
+        this.saveTasks();
       }}
       toggleTimer={(i)=>{
         const tasks = [...this.state.tasks];
@@ -141,6 +145,7 @@ export default class App extends Component {
         this.setState({
           tasks
         });
+        this.saveTasks();
       }}
       editTextareaSize={(w,h,i)=>{
         const tasks = [...this.state.tasks];
@@ -151,6 +156,7 @@ export default class App extends Component {
         this.setState({
           tasks
         });
+        this.saveTasks();
       }}
       deleteTask={(i)=>{
         const tasks = [...this.state.tasks];
@@ -158,6 +164,7 @@ export default class App extends Component {
         this.setState({
           tasks
         });
+        this.saveTasks();
       }}
       />
       <NewTaskButton onClick={()=>{
@@ -165,7 +172,8 @@ export default class App extends Component {
           return {
             tasks: [...tasks, this.createTask("", 0)]
           };
-        })
+        });
+        this.saveTasks();
       }}/>
       <style jsx>{`
 

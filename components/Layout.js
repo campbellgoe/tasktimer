@@ -46,6 +46,7 @@ const Layout = (props) => (
       @media only screen and (max-width: 820px) {
         body {
           margin: 80px 32px;
+          margin-right: 64px;
         }
         .task {
           flex-direction: column;

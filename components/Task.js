@@ -24,8 +24,9 @@ export default class Task extends Component {
     const pcSeconds = parseInt(this.props.elapsedTime/1000)%(60*25)/(60*25)*100;//25 minutes counter
     const pcMinutes = parseInt(this.props.elapsedTime/1000)%(60*5)/(60*5)*100;//5 minutes counter
     const linearGradient = `
-    linear-gradient(90deg, rgba(255,255,0,0.5) ${pcMinutes}%, rgba(255,255,255,0) ${pcMinutes}%, rgba(255,255,255,0) 100%),
-    linear-gradient(90deg, rgb(255,160,80) ${pcSeconds}%, rgb(255,255,255) ${pcSeconds}%, rgb(255,255,255) 100%)
+    linear-gradient(180deg, rgba(255,255,255,1) calc(100% - 10px), rgba(255,255,255,0) calc(100% - 10px), rgba(255,255,255,0) calc(100% - 20px)),
+    linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(0,100,200,0.5) ${pcMinutes}%, rgba(255,255,255,0) ${pcMinutes}%, rgba(255,255,255,0) 100%),
+    linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,200,200,1) ${pcSeconds}%, rgb(255,255,255) ${pcSeconds}%, rgb(255,255,255) 100%)
     `;
     return (
       <li>
@@ -62,10 +63,17 @@ export default class Task extends Component {
               if(confirm("Are you sure you want to delete this task?")) this.props.deleteTask();
             }}
           >delete_forever</i>
+        <i className="material-icons fill-colour"
+            onClick={()=>{
+              //open colour picker
+            }}
+          >color_lens</i>
         </div>
         <style jsx>{`
           .timer {
             padding-top: 5px;
+            text-align: center;
+            width: 100%;
           }
           .delete-task {
             position: absolute;
@@ -75,6 +83,20 @@ export default class Task extends Component {
             color: white;
             cursor: pointer;
             user-select: none;
+          }
+          .fill-colour {
+            position: absolute;
+            right: -43px;
+            bottom: 0;
+            font-size: 38px;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+          }
+          .fill-colour:hover {
+            background: linear-gradient(to right, red, yellow, green, blue, violet);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
           .delete-task:hover {
             color: rgb(255,100,100);
@@ -105,6 +127,8 @@ export default class Task extends Component {
           .btn-timer {
             font-size: 38px;
             cursor: pointer;
+            margin: 0 auto;
+            user-select: none;
           }
           .btn-timer:hover {
             color: rgb(169, 169, 169);
@@ -118,7 +142,7 @@ export default class Task extends Component {
             margin: 0;
             width: 320px;
             height: 5em;
-            min-height: calc(100% - 14px);
+            min-height: 1.5em;
             min-width: 40px;
             border-radius: 3px;
             border-color: rgb(169, 169, 169);
@@ -145,13 +169,10 @@ export default class Task extends Component {
               min-width: calc(100% - 14px);
             }
             .task > div {
-              margin-bottom: 1em;
+              margin-bottom: 0.25em;
             }
             .task > div:last-child {
               margin-bottom: 0;
-            }
-            .btn-timer {
-              margin-left: -11px;
             }
           }
         `}
