@@ -7,7 +7,7 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
-const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask, toggleColourPicker, changeTaskColour}) => {
+const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask, openColourPicker, closeColourPicker, changeTaskColour}) => {
   return (
     <ul>
       {tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea, colour}, i) => {
@@ -24,7 +24,8 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
           editTextareaSize={(w,h)=>editTextareaSize(w,h,i)}
           deleteTask={()=>deleteTask(i)}
           colour={colour}
-          toggleColourPicker={()=>toggleColourPicker(i)}
+          openColourPicker={()=>openColourPicker(i)}
+          closeColourPicker={()=>closeColourPicker(i)}
           changeTaskColour={(r,g,b)=>changeTaskColour(r,g,b,i)}
           >
             {description}
@@ -176,9 +177,17 @@ export default class App extends Component {
         });
         this.saveTasks();
       }}
-      toggleColourPicker={(i)=>{
+      openColourPicker={(i)=>{
         const tasks = [...this.state.tasks];
-        tasks[i].colour.pickerOpen = !tasks[i].colour.pickerOpen;
+        tasks[i].colour.pickerOpen = true;
+        this.setState({
+          tasks
+        });
+        this.saveTasks();
+      }}
+      closeColourPicker={(i)=>{
+        const tasks = [...this.state.tasks];
+        tasks[i].colour.pickerOpen = false;
         this.setState({
           tasks
         });

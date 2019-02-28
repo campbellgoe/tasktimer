@@ -1,7 +1,7 @@
 import { Fragment, Component } from 'react';
 import parseElapsedTime from '../utils/parseElapsedTime.js';
 import { sortableHandle } from 'react-sortable-hoc';
-import { GithubPicker } from 'react-color';
+import ColourPicker from '../components/ColourPicker.js';
 const DragHandle = sortableHandle(() => (
   <Fragment>
   <i className="material-icons drag-icon">drag_indicator</i>
@@ -29,12 +29,13 @@ export default class Task extends Component {
     const colourTransparent = `rgba(${r},${g},${b},0)`;
     const linearGradient = `
     linear-gradient(180deg, ${colour} calc(100% - 10px), ${colourTransparent} calc(100% - 10px), ${colourTransparent} calc(100% - 20px)),
-    linear-gradient(90deg, rgba(${r},${g},${b},0.5) 0%, rgba(0,100,200,0.5) ${pcMinutes}%, ${colourTransparent} ${pcMinutes}%, ${colourTransparent} 100%),
-    linear-gradient(90deg,  ${colour} 0%, rgba(255,200,200,1) ${pcSeconds}%,  ${colour} ${pcSeconds}%,  ${colour} 100%)
+    linear-gradient(90deg, rgba(${r},${g},${b},0.5) 0%, rgba(0,0,0,0.5) ${pcMinutes}%, ${colourTransparent} ${pcMinutes}%, ${colourTransparent} 100%),
+    linear-gradient(90deg,  ${colour} 0%, rgba(255,156,237,1) ${pcSeconds}%,  ${colour} ${pcSeconds}%,  ${colour} 100%)
     `;
     return (
       <li>
         <div className="task" style={{
+            backgroundColor: colour,
             background: linearGradient
           }}>
           <DragHandle/>
@@ -70,25 +71,21 @@ export default class Task extends Component {
         <i className="material-icons fill-colour"
             onClick={()=>{
               //open/close colour picker
-              this.props.toggleColourPicker();
+              this.props.openColourPicker();
             }}
           >color_lens</i>
         {this.props.colour.pickerOpen ?
-            <div className="colour-picker-container">
-              <GithubPicker
-                className="colour-picker"
-                triangle="top-right"
-                colors={[
-                  '#FFFFFF', '#EB9694',
-                  '#FAD0C3', '#FEF3BD', '#C1E1C5',
-                  '#BEDADC', '#C4DEF6', '#D4C4FB'
-                ]}
-                onChangeComplete={ ({rgb})=>{
-                  console.log("rgb:", rgb);
-                  this.props.changeTaskColour(rgb.r, rgb.g, rgb.b);
-                }}
-              />
-            </div> : null}
+            <ColourPicker
+              changeTaskColour={this.props.changeTaskColour}
+              handleClickOutside={()=>{
+                this.props.closeColourPicker();
+                //a little hack just to ensure this runs after openColourPicker if clicking over the open icon
+                setTimeout(()=>{
+                  this.props.closeColourPicker();
+                }, 50);
+              }}
+            />
+            : null}
         </div>
 
         <style jsx>{`
@@ -119,12 +116,6 @@ export default class Task extends Component {
             background: linear-gradient(to right, red, yellow, green, blue, violet);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-          }
-          .colour-picker-container {
-            z-index: 100;
-            position: absolute;
-            right: -43px;
-            bottom: -43px;
           }
           .delete-task:hover {
             color: rgb(255,100,100);
