@@ -7,10 +7,10 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
-const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask}) => {
+const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask, toggleColourPicker, changeTaskColour}) => {
   return (
     <ul>
-      {tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea}, i) => {
+      {tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea, colour}, i) => {
         return (
           <SortableTask
           index={i}
@@ -23,6 +23,9 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
           textarea={textarea}
           editTextareaSize={(w,h)=>editTextareaSize(w,h,i)}
           deleteTask={()=>deleteTask(i)}
+          colour={colour}
+          toggleColourPicker={()=>toggleColourPicker(i)}
+          changeTaskColour={(r,g,b)=>changeTaskColour(r,g,b,i)}
           >
             {description}
           </SortableTask>
@@ -63,14 +66,15 @@ export default class App extends Component {
     localStorage.setItem("tasks", JSON.stringify(this.state.tasks));
   }
   updateTaskTimer(doSetState){
-    const tasks = this.state.tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea})=>{
-      if(paused) return {description, elapsedTime, paused, timeLastStarted, textarea};
+    const tasks = this.state.tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea, colour})=>{
+      if(paused) return {description, elapsedTime, paused, timeLastStarted, textarea, colour};
       return {
         description,
         elapsedTime: elapsedTime+(Date.now()-timeLastStarted),
         paused,
         timeLastStarted: Date.now(),
-        textarea
+        textarea,
+        colour
       }
     });
     if(doSetState){
@@ -112,6 +116,12 @@ export default class App extends Component {
       textarea: {
         width: "320px",
         height: "80px"
+      },
+      colour: {
+        pickerOpen: false,
+        r: 255,
+        g: 255,
+        b: 255
       }
     }
   }
@@ -161,6 +171,27 @@ export default class App extends Component {
       deleteTask={(i)=>{
         const tasks = [...this.state.tasks];
         tasks.splice(i, 1);
+        this.setState({
+          tasks
+        });
+        this.saveTasks();
+      }}
+      toggleColourPicker={(i)=>{
+        const tasks = [...this.state.tasks];
+        tasks[i].colour.pickerOpen = !tasks[i].colour.pickerOpen;
+        this.setState({
+          tasks
+        });
+        this.saveTasks();
+      }}
+      changeTaskColour={(r,g,b,i)=>{
+        const tasks = [...this.state.tasks];
+        tasks[i].colour = {
+          pickerOpen: tasks[i].colour.pickerOpen,
+          r,
+          g,
+          b
+        }
         this.setState({
           tasks
         });
