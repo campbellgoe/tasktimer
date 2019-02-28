@@ -5,6 +5,7 @@ export default class Task extends Component {
     return (
       <span>
         <div className="task">
+          <i className="material-icons drag-icon">drag_indicator</i>
           <div className="textarea-container">
             <textarea value={this.props.children} onChange={this.props.editDescription}/>
             <i className="material-icons textarea-resize">arrow_right</i>
@@ -32,10 +33,20 @@ export default class Task extends Component {
             padding: 20px;
             color: black;
             margin-bottom: 16px;
+            position: relative;
           }
           .task > div {
             display: flex;
             align-items: center;
+          }
+          .drag-icon {
+            font-size: 38px;
+            position: absolute;
+            margin-left: -20px;
+            height: calc(100% - 38px * 2);
+            transform: translate(0, 50%);
+            cursor: grab;
+            user-select: none;
           }
           .btn-timer {
             font-size: 38px;
@@ -59,6 +70,7 @@ export default class Task extends Component {
             border-color: rgb(169, 169, 169);
           }
           .textarea-container {
+            margin-left: 17px;
             position: relative;
           }
           .textarea-resize {
