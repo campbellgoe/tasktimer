@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import Task from '../components/Task.js';
+import parseElapsedTime from '../utils/parseElapsedTime.js';
 import {
   SortableContainer,
   SortableElement,
@@ -80,7 +81,7 @@ export default class App extends Component {
   constructor(){
     super();
     this.state = {
-      tasks: [this.createTask("Task description here", 0)]
+      tasks: [this.createTask("Task description here", 99990000)]
     }
   }
   saveTasks(){
@@ -102,6 +103,11 @@ export default class App extends Component {
       this.setState({
         tasks
       });
+    }
+    if(typeof tasks[0] !== 'undefined'){
+      document.title = "TaskTimer - "+(parseElapsedTime(tasks[0].elapsedTime));
+    } else if(document.title.endsWith("mins")){
+      document.title = "TaskTimer - track time spent on tasks";
     }
     return tasks;
   }

@@ -6,6 +6,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+require('now-env');
 let emails = [];
 app.prepare()
 .then(() => {
@@ -15,6 +16,7 @@ app.prepare()
     return handle(req, res)
   })
   server.post('/contact', function(req, res) {
+    console.log("GMAIL_USER:", process.env.GMAIL_USER);
     const { name, email, message } = req.body;
     if(emails.includes(email)) {
       res.json({ success: false, reason:"A message can only be sent once per 6 seconds."});
@@ -59,7 +61,7 @@ app.prepare()
         } else {
           res.json({
             success: false,
-            message: "Your email was unreachable"
+            message: "Your email was unreachable:\r\n"+JSON.stringify(error)
           });
         }
       });

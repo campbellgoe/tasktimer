@@ -81,10 +81,10 @@ class ContactForm extends Component {
         return res.json();
       }).then(res=>{
         console.log("response:", res);
-        if(res.error){
-          this.onErrorMessage(res.message);
-        } else {
+        if(res.success){
           this.onSuccessMessage(res.message);
+        } else {
+          this.onErrorMessage(res.message);
         }
       }).catch((err)=>{
         console.warning("error sending email:", err);

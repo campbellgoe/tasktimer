@@ -1,0 +1,21 @@
+{
+  "short_name": "Task Timers",
+  "name": "Task Timers",
+  "icons": [
+    {
+      "src": "/static/icon-smol-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/static/icon-smol.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#c6b3fb",
+  "display": "minimal-ui",
+  "scope": "/",
+  "theme_color": "#c6b3fb"
+}
