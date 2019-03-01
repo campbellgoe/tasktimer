@@ -130,6 +130,9 @@ class Layout extends Component {
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           }
+          .about-paragraphs {
+            background-color: ${this.state.nightModeOn ? "#0e0e0e" : "rgba(167,179,253,0.15)"};
+          }
           footer {
             position: absolute;
             bottom: 0;
@@ -199,6 +202,11 @@ class Layout extends Component {
             }
             .task {
               flex-direction: column;
+            }
+          }
+          @media only screen and (max-width: 420px) {
+            footer {
+              font-size: 5vw;
             }
           }
         `}</style>
