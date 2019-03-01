@@ -129,11 +129,12 @@ export default class ContactForm extends Component {
           display: block;
         }
         input[type="text"] {
-          font-size: 0.75em;
           width: 100%;
           display: block;
           min-height: 2em;
           margin-bottom: 0.5em;
+          font-family: 'Hind Guntur',sans-serif;
+          font-size: 16px;
         }
         .name-stuff {
           margin: 20px 0;

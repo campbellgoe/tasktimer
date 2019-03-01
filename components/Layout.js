@@ -48,6 +48,7 @@ class Layout extends Component {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta charSet="utf-8" />
+          <title>TaskTimer - make timers for tasks</title>
         </Head>
         {this.state.nightModeOn ? <i
           className="material-icons night-mode-icon light-mode-icon"
@@ -70,7 +71,9 @@ class Layout extends Component {
               </Link>
             </div>
           <Header />
+          <main>
           {this.props.children}
+          </main>
         </div>
         <footer>
         Copyright &copy; George O. E. Campbell 2019

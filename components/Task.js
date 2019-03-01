@@ -40,6 +40,7 @@ export default class Task extends Component {
           <DragHandle/>
           <div className="textarea-container">
             <textarea
+              id={"task"+(this.props.id+1)}
               style={{
                 width: this.props.textarea.width,
                 height: this.props.textarea.height

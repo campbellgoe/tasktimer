@@ -8,17 +8,18 @@ const Header = ({ children, router, href }) => {
   const linearGradient = "linear-gradient(180deg, rgb(255,255,255,0) 80%, rgba(255,255,255,1) 80%, rgba(255,255,255,1) 100%)";
   //#72512a golden brown
   return (
-    <div>
-
-        <Link href="/">
-          <a id="home">Timers</a>
-        </Link>
-        <Link href="/about">
-          <a id="about">About</a>
-        </Link>
-        <Link href="/contact">
-          <a id="contact">Contact</a>
-        </Link>
+    <header>
+        <nav>
+          <Link href="/">
+            <a id="home">Timers</a>
+          </Link>
+          <Link href="/about">
+            <a id="about">About</a>
+          </Link>
+          <Link href="/contact">
+            <a id="contact">Contact</a>
+          </Link>
+        </nav>
         <style jsx>{
           `
             a {
@@ -42,7 +43,7 @@ const Header = ({ children, router, href }) => {
             #contact {
               background: ${isContact ? linearGradient : ""};
             }
-            div {
+            nav {
               margin-bottom: 80px;
             }
             @media only screen and (max-width: 360px) {
@@ -56,7 +57,7 @@ const Header = ({ children, router, href }) => {
             }
           `
         }</style>
-    </div>
+    </header>
 )}
 
 export default withRouter(Header)

@@ -13,6 +13,7 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
         return (
           <SortableTask
           index={i}
+          id={i}
           key={"task_"+i}
           elapsedTime={elapsedTime}
           paused={paused}
