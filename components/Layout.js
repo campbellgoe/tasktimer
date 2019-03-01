@@ -131,7 +131,7 @@ class Layout extends Component {
             -webkit-text-fill-color: transparent;
           }
           .about-paragraphs {
-            background-color: ${this.state.nightModeOn ? "#0e0e0e" : "rgba(167,179,253,0.15)"};
+            background-color: ${this.state.nightModeOn ? "#0e0e0e" : "rgba(167,179,253,0.18)"};
           }
           footer {
             position: absolute;

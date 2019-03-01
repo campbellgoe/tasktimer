@@ -13,7 +13,7 @@ export default class ContactForm extends Component {
   }
   handleMessageKeyUp = (e) => {
     const value = e.target.value;
-    if(value.length > 40){
+    if(value.length > 30){
       this.setState({
         message: value,
         messageValid: true
@@ -49,7 +49,7 @@ export default class ContactForm extends Component {
         this.setState({
           submitDisabled: false
         });
-      }, 1000*60);
+      }, 1000*6);
       //fetch POST
       fetch("/contact", {
         method: "POST",
@@ -72,7 +72,10 @@ export default class ContactForm extends Component {
         console.log("error sending email:", err);
       })
     } else {
-      alert("enter a valid email message at least 40 characters in the message.");
+      if(!this.state.messageValid || this.state.messageValid === "unset") alert("The message is too short. Please send more than 30 characters.");
+      if(!this.state.emailValid || this.state.emailValid === "unset") alert("Please enter a valid email address.");
+
+
     }
   }
   render(){
@@ -88,19 +91,23 @@ export default class ContactForm extends Component {
           />
         <i className="material-icons textarea-resize">arrow_right</i>
       </div>
-      <label htmlFor="contact-name">Your name &#42;</label>
-      <input
-      id="contact-name"
-      type="text"
-      onChange={this.handleNameChange}
-      />
-      <label htmlFor="contact-email">Your email &#42;</label>
-      <input
-      id="contact-email"
-      type="text"
-      onChange={this.handleEmailChange}
-      style={this.state.emailValid === false ? {borderColor:"red"} : {}}
-      />
+      <div className="name-stuff">
+        <label htmlFor="contact-name">Your name</label>
+        <input
+        id="contact-name"
+        type="text"
+        onChange={this.handleNameChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="contact-email">Your email &#42;</label>
+        <input
+        id="contact-email"
+        type="text"
+        onChange={this.handleEmailChange}
+        style={this.state.emailValid === false ? {borderColor:"red"} : {}}
+        />
+      </div>
       <button className="blue-g" id="btn-contact-send" onClick={this.handleSubmitForm} style={this.state.submitDisabled ? { backgroundColor: "#dcdcdc "} : {}} disabled={this.state.submitDisabled}>Send to George Campbell</button>
       <style jsx>{`
         .contact-message {
@@ -117,6 +124,49 @@ export default class ContactForm extends Component {
           margin-left: 0;
         }
         .textarea-resize {
+        }
+        label {
+          display: block;
+        }
+        input[type="text"] {
+          font-size: 0.75em;
+          width: 100%;
+          display: block;
+          min-height: 2em;
+          margin-bottom: 0.5em;
+        }
+        .name-stuff {
+          margin: 20px 0;
+        }
+        #btn-contact-send {
+          margin-top: 20px;
+        }
+        button {
+          min-width: 2em;
+          min-height: 2em;
+          border-radius: 3px;
+          padding: 7.5px;
+          background: #8b00ff;
+          border: none;
+          color: white;
+          font-size: 18px;
+          -webkit-box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
+          -moz-box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+        button:hover {
+          background: #c11cff;
+          cursor: pointer;
+        }
+        button:focus {
+          outline: 0;
+        }
+        button:active {
+          background: #ff1cb4;
         }
       `}</style>
     </React.Fragment>);
