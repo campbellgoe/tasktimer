@@ -1,4 +1,3 @@
-import Layout from '../components/Layout.js';
 import { Component } from 'react';
 import Task from '../components/Task.js';
 import {
@@ -132,7 +131,7 @@ export default class App extends Component {
     }));
   }
   render(){
-    return (<Layout>
+    return (<React.Fragment>
       <SortableTasks
       useDragHandle
       tasks={this.state.tasks}
@@ -219,6 +218,6 @@ export default class App extends Component {
 
       `}
       </style>
-    </Layout>);
+    </React.Fragment>);
   }
 }

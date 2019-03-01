@@ -13,20 +13,34 @@ class Layout extends Component {
       topColour
     }
   }
-  toggleNightMode = () => {
-    if(this.state.nightModeOn){
-      this.setState({
-        nightModeOn: false,
-        bottomColour,
-        topColour
-      });
+  componentDidMount(){
+    let nightModeOn = localStorage.getItem("night_mode_on");
+    if(nightModeOn !== null) {
+      nightModeOn = JSON.parse(nightModeOn);
+      this.toggleNightMode(nightModeOn);
+    }
+  }
+  toggleNightMode = (val) => {
+    let nightModeOn;
+    if(typeof val == 'boolean'){
+      nightModeOn = val;
     } else {
+      nightModeOn = !this.state.nightModeOn;
+    }
+    if(nightModeOn){
       this.setState({
-        nightModeOn: true,
+        nightModeOn: nightModeOn,
         bottomColour: "#000000",
         topColour: "#000000"
       });
+    } else {
+      this.setState({
+        nightModeOn: nightModeOn,
+        bottomColour,
+        topColour
+      });
     }
+    localStorage.setItem("night_mode_on", JSON.stringify(nightModeOn));
   }
   render(){
     return (
@@ -102,12 +116,16 @@ class Layout extends Component {
             top: 40px;
             cursor: pointer;
           }
+          .night-mode-icon:hover {
+            opacity: 0.5;
+          }
           .light-mode-icon {
             font-size: 36px;
             width: 36px;
             height: 36px;
           }
           .light-mode-icon:hover {
+            opacity: 1;
             background: linear-gradient(90deg,${bottomColour} 0%,${topColour} 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
