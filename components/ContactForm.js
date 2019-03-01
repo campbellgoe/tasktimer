@@ -1,5 +1,5 @@
 import { Component } from 'react';
-export default class ContactForm extends Component {
+class ContactForm extends Component {
   constructor(){
     super();
     this.state = {
@@ -39,6 +39,22 @@ export default class ContactForm extends Component {
       email: value
     })
   }
+  onSuccessMessage=(msg)=>{
+    //alert("success: "+msg);
+    const { toastManager } = this.props;
+    toastManager.add(msg, {
+      appearance: 'success',
+      autoDismiss: true,
+    })
+  }
+  onErrorMessage=(msg)=>{
+    //alert("error: "+msg);
+    const { toastManager } = this.props;
+    toastManager.add(msg, {
+      appearance: 'warning',
+      autoDismiss: true,
+    })
+  }
   handleSubmitForm = () => {
     console.log("submit clicked");
     if(this.state.emailValid === true && this.state.messageValid){
@@ -65,17 +81,18 @@ export default class ContactForm extends Component {
         return res.json();
       }).then(res=>{
         console.log("response:", res);
-        alert(res.message);
-        //React.Notification(res.message)
+        if(res.error){
+          this.onErrorMessage(res.message);
+        } else {
+          this.onSuccessMessage(res.message);
+        }
       }).catch((err)=>{
-        alert("Error sending message. Please try again later.");
-        console.log("error sending email:", err);
+        console.warning("error sending email:", err);
+        this.onErrorMessage("Error sending message. Please try again later.");
       })
     } else {
-      if(!this.state.messageValid || this.state.messageValid === "unset") alert("The message is too short. Please send more than 30 characters.");
-      if(!this.state.emailValid || this.state.emailValid === "unset") alert("Please enter a valid email address.");
-
-
+      if(!this.state.messageValid || this.state.messageValid === "unset") this.onErrorMessage("The message is too short. Please send more than 30 characters.");
+      if(!this.state.emailValid || this.state.emailValid === "unset") this.onErrorMessage("Please enter a valid email address.");
     }
   }
   render(){
@@ -173,3 +190,4 @@ export default class ContactForm extends Component {
     </React.Fragment>);
   }
 }
+export default ContactForm;
