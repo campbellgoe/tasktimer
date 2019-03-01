@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@zeit/next-css": "^1.0.1",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "next": "^8.0.3",

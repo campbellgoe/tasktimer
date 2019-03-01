@@ -7,7 +7,6 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'
 const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
 const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask, openColourPicker, closeColourPicker, changeTaskColour}) => {
   return (
@@ -81,7 +80,7 @@ export default class App extends Component {
   constructor(){
     super();
     this.state = {
-      tasks: [this.createTask("Task description here", 99990000)]
+      tasks: [this.createTask("Task description here", 0)]
     }
   }
   saveTasks(){
@@ -104,7 +103,7 @@ export default class App extends Component {
         tasks
       });
     }
-    if(typeof tasks[0] !== 'undefined'){
+    if(typeof tasks[0] !== 'undefined' && tasks[0].elapsedTime > 0){
       document.title = "TaskTimer - "+(parseElapsedTime(tasks[0].elapsedTime));
     } else if(document.title.endsWith("mins")){
       document.title = "TaskTimer - track time spent on tasks";
@@ -124,7 +123,6 @@ export default class App extends Component {
     } catch(err){
       localTasks = null;
     }
-    console.log("local tasks:", localTasks);
     if(localTasks){
       this.setState({
         tasks: localTasks
@@ -165,7 +163,6 @@ export default class App extends Component {
       onSortEnd={this.onSortEnd}
       editDescription={(e, i)=>{
         const tasks = [...this.state.tasks];
-        console.log("i:", i);
         tasks[i].description = e.target.value;
         this.setState({
           tasks

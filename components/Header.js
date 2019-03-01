@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { withRouter } from 'next/router'
+import Router, { withRouter } from 'next/router'
 
 const Header = ({ children, router, href }) => {
   const isHome = router.pathname === "/";
@@ -11,7 +11,7 @@ const Header = ({ children, router, href }) => {
     <header>
         <nav>
           <Link href="/">
-            <a id="home">Timers</a>
+            <a id="home" onClick={() => Router.push('/')}>Timers</a>
           </Link>
           <Link href="/about">
             <a id="about">About</a>
