@@ -4,15 +4,20 @@ import { withRouter } from 'next/router'
 const Header = ({ children, router, href }) => {
   const isHome = router.pathname === "/";
   const isAbout = router.pathname === "/about";
-  const linearGradient = "linear-gradient(180deg, rgba(0,0,0,1) 80%, rgba(255,255,255,1) 80%, rgba(255,255,255,1) 100%)";
+  const isContact = router.pathname === "/contact";
+  const linearGradient = "linear-gradient(180deg, rgb(255,255,255,0) 80%, rgba(255,255,255,1) 80%, rgba(255,255,255,1) 100%)";
   //#72512a golden brown
   return (
     <div>
+
         <Link href="/">
           <a id="home">Timers</a>
         </Link>
         <Link href="/about">
           <a id="about">About</a>
+        </Link>
+        <Link href="/contact">
+          <a id="contact">Contact</a>
         </Link>
         <style jsx>{
           `
@@ -33,6 +38,9 @@ const Header = ({ children, router, href }) => {
             }
             #about {
               background: ${isAbout ? linearGradient : ""};
+            }
+            #contact {
+              background: ${isContact ? linearGradient : ""};
             }
             div {
               margin-bottom: 80px;

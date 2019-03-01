@@ -151,39 +151,11 @@ export default class Task extends Component {
           .btn-timer:hover {
             color: rgb(169, 169, 169);
           }
-          textarea {
-            max-width: 540px;
-            font-family: 'Hind Guntur', sans-serif;
-            font-size: 16px;
-            line-height: 20px;
-            padding: 6px;
-            margin: 0;
-            width: 320px;
-            height: 5em;
-            min-height: 1.5em;
-            min-width: 40px;
-            border-radius: 3px;
-            border-color: rgb(169, 169, 169);
-          }
-          .textarea-container {
-            margin-left: 17px;
-            position: relative;
-          }
-          .textarea-resize {
-            font-size: 64px;
-            position: absolute;
-            right: -26px;
-            bottom: -26px;
-            transform: rotate(45deg);
-            color: rgb(169, 169, 169);
-            pointer-events: none;
-            user-select: none;
-          }
           @media only screen and (max-width: 820px) {
             textarea {
               resize: vertical;
               max-width: 100%;
-              width: 100%;
+              width: 100% !important;
               min-width: calc(100% - 14px);
             }
             .task > div {
