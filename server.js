@@ -5,6 +5,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const nodemailer = require('nodemailer');
+const { join } = require('path');
 require('dotenv').config();
 require('now-env');
 let emails = [];
@@ -12,6 +13,10 @@ app.prepare()
 .then(() => {
   const server = express();
   server.use(bodyParser.json());
+  server.get("/sw.js", (req, res) => {
+    res.set('Content-Type', 'text/javascript');
+    return res.sendFile(join(__dirname, "./offline/serviceWorker.js"));
+  });
   server.get('*', (req, res) => {
     return handle(req, res)
   })

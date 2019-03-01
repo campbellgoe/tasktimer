@@ -128,6 +128,13 @@ export default class App extends Component {
         tasks: localTasks
       })
     }
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js")
+        .then(()=> console.log("Registered the service worker."))
+        .catch(err => console.error("Service worker registration failed", err))
+    } else {
+        console.log("Service worker not supported");
+    }
   }
   componentWillUnmount(){
     clearInterval(this.intervalId);
