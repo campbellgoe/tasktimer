@@ -5,6 +5,8 @@ import {
   SortableElement,
   arrayMove
 } from 'react-sortable-hoc';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
 const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask, openColourPicker, closeColourPicker, changeTaskColour}) => {
   return (
@@ -22,7 +24,25 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
           toggleTimer={()=>toggleTimer(i)}
           textarea={textarea}
           editTextareaSize={(w,h)=>editTextareaSize(w,h,i)}
-          deleteTask={()=>deleteTask(i)}
+          confirmDelete={()=>{
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <div className='custom-ui'>
+                    <h1>Delete task</h1>
+                    <p>Are you sure you want to delete this task?</p>
+                    <div style={{display: "flex", justifyContent:"space-evenly"}}>
+                      <button onClick={() => {
+                          deleteTask(i);
+                          onClose();
+                      }}>Yes, delete</button>
+                      <button onClick={onClose}>No</button>
+                    </div>
+                  </div>
+                );
+              }
+            });
+          }}
           colour={colour}
           openColourPicker={()=>openColourPicker(i)}
           closeColourPicker={()=>closeColourPicker(i)}

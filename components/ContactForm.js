@@ -159,33 +159,6 @@ class ContactForm extends Component {
         #btn-contact-send {
           margin-top: 20px;
         }
-        button {
-          min-width: 2em;
-          min-height: 2em;
-          border-radius: 3px;
-          padding: 7.5px;
-          background: #8b00ff;
-          border: none;
-          color: white;
-          font-size: 18px;
-          -webkit-box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
-          -moz-box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
-          box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-        button:hover {
-          background: #c11cff;
-          cursor: pointer;
-        }
-        button:focus {
-          outline: 0;
-        }
-        button:active {
-          background: #ff1cb4;
-        }
       `}</style>
     </React.Fragment>);
   }

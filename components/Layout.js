@@ -50,38 +50,40 @@ class Layout extends Component {
           <meta charSet="utf-8" />
           <title>TaskTimer - make timers for tasks</title>
         </Head>
-        {this.state.nightModeOn ? <i
-          className="material-icons night-mode-icon light-mode-icon"
-          onClick={this.toggleNightMode}
-          >wb_sunny</i>
-          :
-          <img
-          src="/static/night_mode_icon.svg"
-          alt="night mode"
-          className="night-mode-icon"
-          onClick={this.toggleNightMode}
-          />
-        }
-        <div className="container">
-            <div className="logo">
-              <Link href="/">
-                <a>
-                  <img src="/static/logo.png" alt="Task Timer"/>
-                </a>
-              </Link>
-            </div>
-          <Header />
-          <main>
-          {this.props.children}
-          </main>
-        </div>
-        <footer>
-        Copyright &copy; George O. E. Campbell 2019
-        </footer>
+        <section>
+          {this.state.nightModeOn ? <i
+            className="material-icons night-mode-icon light-mode-icon"
+            onClick={this.toggleNightMode}
+            >wb_sunny</i>
+            :
+            <img
+            src="/static/night_mode_icon.svg"
+            alt="night mode"
+            className="night-mode-icon"
+            onClick={this.toggleNightMode}
+            />
+          }
+          <div className="container">
+              <div className="logo">
+                <Link href="/">
+                  <a>
+                    <img src="/static/logo.png" alt="Task Timer"/>
+                  </a>
+                </Link>
+              </div>
+            <Header />
+            <main>
+            {this.props.children}
+            </main>
+          </div>
+          <footer>
+          Copyright &copy; George O. E. Campbell 2019
+          </footer>
+        </section>
         <style jsx global>{`
           @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Josefin+Sans:700|Material+Icons');
           html {
-            background: linear-gradient(90deg,${this.state.bottomColour} 0%,${this.state.topColour} 100%);
+            background: linear-gradient(108deg,${this.state.bottomColour} 0%,${this.state.topColour} 100%);
           }
           body {
             position: absolute;
@@ -93,10 +95,16 @@ class Layout extends Component {
             padding: 0;
             font-family: 'Hind Guntur',sans-serif;
             background: ${this.state.topColour};
-            background: linear-gradient(90deg,${this.state.bottomColour} 0%,${this.state.topColour} 100%);
+            background: linear-gradient(108deg,${this.state.bottomColour} 0%,${this.state.topColour} 100%);
             font-size: 20px;
             line-height: 26px;
             color: #fff;
+          }
+          section {
+            height: 100vh;
+            top: 0;
+            position: absolute;
+            width: 100%;
           }
           .container {
             margin: 110px 25%;
@@ -135,6 +143,11 @@ class Layout extends Component {
           }
           .about-paragraphs {
             background-color: ${this.state.nightModeOn ? "#0e0e0e" : "rgba(167,179,253,0.18)"};
+            padding: 5px 1em;
+            border-radius: 0.5em;
+          }
+          .about-paragraphs > p:first-child {
+            margin-top: 5px;
           }
           footer {
             position: absolute;
@@ -177,6 +190,44 @@ class Layout extends Component {
             color: rgb(169, 169, 169);
             pointer-events: none;
             user-select: none;
+          }
+          .react-confirm-alert {
+            padding: 0.75em;
+            padding-bottom: 1.5em;
+            border: 1px solid #dedede;
+            background-color: white;
+            color: black;
+            border-radius: 16px;
+          }
+          .react-confirm-alert-overlay {
+            background: rgba(255,255,255,0.5);
+          }
+          button {
+            min-width: 6em;
+            min-height: 2em;
+            border-radius: 3px;
+            padding: 7.5px;
+            background: #8b00ff;
+            border: none;
+            color: white;
+            font-size: 18px;
+            -webkit-box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
+            -moz-box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.25);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+          button:hover {
+            background: #c11cff;
+            cursor: pointer;
+          }
+          button:focus {
+            outline: 0;
+          }
+          button:active {
+            background: #ff1cb4;
           }
           @media only screen and (max-width: 1600px) {
             .container {

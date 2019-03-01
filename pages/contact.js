@@ -10,8 +10,7 @@ const Contact = () => (
         </div>
         <style jsx>{`
           .about-paragraphs {
-            padding: 5px 1em;
-            border-radius: 0.5em;
+            padding-bottom: 10px;
           }
         `}</style>
       </ToastProvider>

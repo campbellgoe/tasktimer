@@ -65,7 +65,7 @@ export default class Task extends Component {
           </div>
           <i className="material-icons delete-task"
             onClick={()=>{
-              if(confirm("Are you sure you want to delete this task?")) this.props.deleteTask();
+              this.props.confirmDelete()
             }}
           >delete_forever</i>
         <i className="material-icons fill-colour"
