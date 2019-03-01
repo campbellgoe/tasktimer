@@ -48,6 +48,7 @@ class Layout extends Component {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta charSet="utf-8" />
+          <meta name="theme-color" content="#c6b3fb"/>
           <title>TaskTimer - make timers for tasks</title>
         </Head>
         <section>
@@ -81,7 +82,43 @@ class Layout extends Component {
           </footer>
         </section>
         <style jsx global>{`
-          @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Josefin+Sans:700|Material+Icons');
+          @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Josefin+Sans:700');
+          @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url(../static/fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
+            src: local('Material Icons'),
+              local('MaterialIcons-Regular'),
+              url(../static/fonts/MaterialIcons-Regular.woff2) format('woff2'),
+              url(../static/fonts/MaterialIcons-Regular.woff) format('woff'),
+              url(../static/fonts/MaterialIcons-Regular.ttf) format('truetype');
+          }
+          .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;  /* Preferred icon size */
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+
+            /* Support for all WebKit browsers. */
+            -webkit-font-smoothing: antialiased;
+            /* Support for Safari and Chrome. */
+            text-rendering: optimizeLegibility;
+
+            /* Support for Firefox. */
+            -moz-osx-font-smoothing: grayscale;
+
+            /* Support for IE. */
+            font-feature-settings: 'liga';
+          }
+
           html {
             background: linear-gradient(108deg,${this.state.bottomColour} 0%,${this.state.topColour} 100%);
           }
@@ -100,10 +137,12 @@ class Layout extends Component {
             line-height: 26px;
             color: #fff;
           }
+          .react-confirm-alert-blur {
+            display: inline-block;
+            width: 100%;
+          }
           section {
-            height: 100vh;
             top: 0;
-            position: absolute;
             width: 100%;
           }
           .container {
@@ -182,12 +221,11 @@ class Layout extends Component {
             position: relative;
           }
           .textarea-resize {
-            font-size: 64px;
+            width: 64px;
             position: absolute;
             right: -26px;
             bottom: -26px;
             transform: rotate(45deg);
-            color: rgb(169, 169, 169);
             pointer-events: none;
             user-select: none;
           }

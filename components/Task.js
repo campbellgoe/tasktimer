@@ -4,7 +4,7 @@ import { sortableHandle } from 'react-sortable-hoc';
 import ColourPicker from '../components/ColourPicker.js';
 const DragHandle = sortableHandle(() => (
   <Fragment>
-  <i className="material-icons drag-icon">drag_indicator</i>
+  <img src="/static/drag_indicator.svg" alt="Drag me" className="drag-icon"/>
   <style jsx>{`
     .drag-icon {
       font-size: 38px;
@@ -51,7 +51,7 @@ export default class Task extends Component {
                 this.props.editTextareaSize(e.target.style.width, e.target.style.height);
               }}
               />
-            <i className="material-icons textarea-resize">arrow_right</i>
+            <img src="/static/arrow_right.svg" alt="resize" className="textarea-resize"/>
           </div>
           <div>
             <span className="timer">{parseElapsedTime(this.props.elapsedTime)}</span>

@@ -106,7 +106,7 @@ class ContactForm extends Component {
           onKeyUp={this.handleMessageKeyUp}
           style={this.state.messageValid === false ? {borderColor:"red"} : {}}
           />
-        <i className="material-icons textarea-resize">arrow_right</i>
+        <img src="/static/arrow_right.svg" alt="resize" className="textarea-resize"/>
       </div>
       <div className="name-stuff">
         <label htmlFor="contact-name">Your name</label>
@@ -152,6 +152,10 @@ class ContactForm extends Component {
           margin-bottom: 0.5em;
           font-family: 'Hind Guntur',sans-serif;
           font-size: 16px;
+          box-sizing: border-box;
+          border-radius: 3px;
+          border: 1px solid rgb(169,169,169);
+          padding-top: 5.5px;
         }
         .name-stuff {
           margin: 20px 0;
