@@ -2,7 +2,13 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import Layout from '../components/Layout.js'
 import Head from 'next/head';
+import ReactGA from 'react-ga';
 class MyApp extends App {
+  componentDidMount(){
+    console.log("google analytics...");
+    ReactGA.initialize('UA-136541952-1');
+    ReactGA.pageview(window.location.pathname);
+  }
   render () {
     const { Component, pageProps } = this.props
 
@@ -27,7 +33,7 @@ class MyApp extends App {
           <title>TaskTimer - track time spent on tasks</title>
         </Head>
         <Layout>
-          <Component {...pageProps} />
+          <Component {...pageProps} ReactGA={ReactGA} />
         </Layout>
       </Container>
     )

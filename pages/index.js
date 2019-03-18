@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import Task from '../components/Task.js';
 import parseElapsedTime from '../utils/parseElapsedTime.js';
+import ReactGA from 'react-ga';
 import {
   SortableContainer,
   SortableElement,
@@ -158,6 +159,10 @@ export default class App extends Component {
     }
   }
   onSortEnd = ({oldIndex, newIndex}) => {
+    ReactGA.event({
+      category: 'Tasks',
+      action: 'Reorder task'
+    });
     this.setState(({tasks}) => ({
       tasks: arrayMove(tasks, oldIndex, newIndex),
     }));
@@ -183,6 +188,10 @@ export default class App extends Component {
         if(!paused){
           tasks[i].timeLastStarted = Date.now();//set last started time to now
         }
+        ReactGA.event({
+          category: 'Tasks',
+          action: 'Toggle timer'
+        });
         this.setState({
           tasks
         });
@@ -238,6 +247,10 @@ export default class App extends Component {
       }}
       />
       <NewTaskButton onClick={()=>{
+        ReactGA.event({
+          category: 'Tasks',
+          action: 'Create Task'
+        });
         this.setState(({tasks})=>{
           return {
             tasks: [...tasks, this.createTask("", 0)]

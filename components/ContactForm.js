@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import ReactGA from 'react-ga';
 class ContactForm extends Component {
   constructor(){
     super();
@@ -56,8 +57,11 @@ class ContactForm extends Component {
     })
   }
   handleSubmitForm = () => {
-    console.log("submit clicked");
     if(this.state.emailValid === true && this.state.messageValid){
+      ReactGA.event({
+        category: 'Contact',
+        action: 'Form submit'
+      });
       this.setState({
         submitDisabled: true
       });

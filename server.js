@@ -6,6 +6,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const nodemailer = require('nodemailer');
 const { join } = require('path');
+const { parse } = require('url');
 require('dotenv').config();
 require('now-env');
 let emails = [];
@@ -13,13 +14,19 @@ app.prepare()
 .then(() => {
   const server = express();
   server.use(bodyParser.json());
-  server.get("/sw.js", (req, res) => {
+
+  server.get("/service-worker.js", (req, res) => {
+    const parsedUrl = parse(req.url, true);
+    const { pathname } = parsedUrl;
+    const filePath = join(__dirname, '.next', pathname)
     res.set('Content-Type', 'text/javascript');
-    return res.sendFile(join(__dirname, "./offline/serviceWorker.js"));
+    return res.sendFile(filePath);
   });
+
   server.get('*', (req, res) => {
     return handle(req, res)
   })
+
   server.post('/contact', function(req, res) {
     console.log("GMAIL_USER:", process.env.GMAIL_USER);
     const { name, email, message } = req.body;
