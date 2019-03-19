@@ -76,10 +76,14 @@ class Layout extends Component {
         </section>
         <style jsx global>{`
           @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Josefin+Sans:700');
+          /* stupid class name for toast container. beware it may change
+          with updates to the package */
+          .css-1p3cd4g {
+            max-width: 100%;
+          }
           body.react-confirm-alert-body-element {
             overflow: hidden;
           }
-
           .react-confirm-alert-blur {
             filter: url(#gaussian-blur);
             filter: blur(2px);
@@ -304,6 +308,9 @@ class Layout extends Component {
             transform: rotate(45deg);
             pointer-events: none;
             user-select: none;
+          }
+          .css-otip-ToastElement {
+            max-width: 100%;
           }
           .react-confirm-alert {
             padding: 0.75em;

@@ -1,5 +1,6 @@
 const assert = require("assert");
 const parseElapsedTime = require("../utils/parseElapsedTime.js");
+const puppeteer = require('puppeteer');
 
 describe("parseElapsedTime", function(){
   it("should return correct output, including correct pluralisation", function(){
@@ -56,4 +57,53 @@ describe("parseElapsedTime", function(){
     assert.equal(parseElapsedTime(1000*60*60*24*7*43+1000*60*60), "43 w, 0 d, 1 h, 0 m");
     assert.equal(parseElapsedTime(1000*60*60*24*7*43+1000*60*60*24), "43 w, 1 d, 0 h, 0 m");
   })
+})
+
+describe("ui tests", function(){
+  let browser, page;
+  before(function(done){
+    (async () => {
+      browser = await puppeteer.launch();
+      console.log("browser launched");
+      page = await browser.newPage();
+      console.log("browser and page launched");
+      done();
+    })();
+  });
+  it("should display toast notifications responsively, within the screen width", function(done){
+    this.timeout(30000);
+    (async () => {
+      let fail = false;
+      await page.setViewport({
+        width: 320,
+        height: 600,
+        isMobile: true
+      }) ;
+      console.log("viewport set");
+
+      await page.goto('http://localhost:3000/contact');
+      console.log("went to contact page");
+      await page.click("#btn-contact-send");
+      const toast = await page.waitForSelector(".css-otip-ToastElement:first-child");
+      const toastWidth = parseInt(JSON.parse(JSON.stringify(await toast.boundingBox())).width);
+      await page.screenshot({path:"./test/toast-test.png", fullPage:true});
+    //  const toastWidth = await toast.boundingBox().width;
+      console.log("toast width:", toastWidth);
+      if(toastWidth > 307){
+        fail = true;
+      }
+      done(fail);
+    })();
+  })
+
+  after(function(){
+    (async () => {
+      await page.goto('http://localhost:3000/');
+      await page.screenshot({path:"./test/home-test.png", fullPage:true});
+      await page.goto('http://localhost:3000/about');
+      await page.screenshot({path:"./test/about-test.png", fullPage:true});
+      await browser.close();
+    })();
+  })
+
 })

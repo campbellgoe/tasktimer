@@ -50,12 +50,13 @@ class ContactForm extends Component {
       autoDismiss: true,
     })
   }
+
   onErrorMessage=(msg)=>{
     //alert("error: "+msg);
     const { toastManager } = this.props;
     toastManager.add(msg, {
       appearance: 'warning',
-      autoDismiss: true,
+      autoDismiss: false,
     })
   }
   handleSubmitForm = () => {
