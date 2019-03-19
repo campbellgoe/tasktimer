@@ -59,6 +59,7 @@ class ContactForm extends Component {
     })
   }
   handleSubmitForm = () => {
+    if(!navigator.onLine) return this.onErrorMessage("Your are not online, please reconnect before sending feedback.");
     if(this.state.emailValid === true && this.state.messageValid){
       ReactGA.event({
         category: 'Contact',
