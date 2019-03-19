@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import ReactGA from 'react-ga';
+import Resizer from './Resizer.js';
 class ContactForm extends Component {
   constructor(){
     super();
@@ -9,7 +10,8 @@ class ContactForm extends Component {
       email: "",
       messageValid: "unset",
       emailValid: "unset",
-      submitDisabled: false
+      submitDisabled: false,
+      textarea: null
     }
   }
   handleMessageKeyUp = (e) => {
@@ -101,73 +103,85 @@ class ContactForm extends Component {
   }
   render(){
     return (<React.Fragment>
-      <p style={{fontSize:"0.75em"}}>&#42; required</p>
-      <label htmlFor="contact-message">Message &#42;</label>
-      <div className="textarea-container">
-        <textarea
-          className="contact-message"
-          placeholder="Write your message here"
-          onKeyUp={this.handleMessageKeyUp}
-          style={this.state.messageValid === false ? {borderColor:"red"} : {}}
+      <Resizer
+        lock={{width:true}}
+        textarea={this.state.textarea}
+        >
+        <p style={{fontSize:"0.75em"}}>&#42; required</p>
+        <label htmlFor="contact-message">Message &#42;</label>
+        <div className="textarea-container">
+          <textarea
+            className="contact-message"
+            placeholder="Write your message here"
+            onKeyUp={this.handleMessageKeyUp}
+            style={this.state.messageValid === false ? {borderColor:"red"} : {}}
+            ref={(el)=>{
+              if(this.state.textarea === null){
+                this.setState({
+                  textarea: el
+                });
+              }
+            }}
+            />
+          <img src="/static/arrow_right.svg" alt="resize" className="textarea-resize"/>
+        </div>
+        <div className="name-stuff">
+          <label htmlFor="contact-name">Your name</label>
+          <input
+          id="contact-name"
+          type="text"
+          onChange={this.handleNameChange}
           />
-        <img src="/static/arrow_right.svg" alt="resize" className="textarea-resize"/>
-      </div>
-      <div className="name-stuff">
-        <label htmlFor="contact-name">Your name</label>
-        <input
-        id="contact-name"
-        type="text"
-        onChange={this.handleNameChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="contact-email">Your email &#42;</label>
-        <input
-        id="contact-email"
-        type="text"
-        onChange={this.handleEmailChange}
-        style={this.state.emailValid === false ? {borderColor:"red"} : {}}
-        />
-      </div>
-      <button className="blue-g" id="btn-contact-send" onClick={this.handleSubmitForm} style={this.state.submitDisabled ? { backgroundColor: "#dcdcdc "} : {}} disabled={this.state.submitDisabled}>Send to George Campbell</button>
-      <style jsx>{`
-        .contact-message {
-          width: 100%;
-          height: 14em;
-          min-height: 5em;
-          max-height: 1000px;
-          line-height: 1.5em;
-          resize: vertical;
-          max-width: 100%;
-          display: block;
-        }
-        .textarea-container {
-          margin-left: 0;
-        }
-        .textarea-resize {
-        }
-        label {
-          display: block;
-        }
-        input[type="text"] {
-          width: 100%;
-          display: block;
-          min-height: 2em;
-          margin-bottom: 0.5em;
-          font-family: 'Hind Guntur',sans-serif;
-          font-size: 16px;
-          box-sizing: border-box;
-          border-radius: 3px;
-          border: 1px solid rgb(169,169,169);
-          padding-top: 5.5px;
-        }
-        .name-stuff {
-          margin: 20px 0;
-        }
-        #btn-contact-send {
-          margin-top: 20px;
-        }
-      `}</style>
+        </div>
+        <div>
+          <label htmlFor="contact-email">Your email &#42;</label>
+          <input
+          id="contact-email"
+          type="text"
+          onChange={this.handleEmailChange}
+          style={this.state.emailValid === false ? {borderColor:"red"} : {}}
+          />
+        </div>
+        <button className="blue-g" id="btn-contact-send" onClick={this.handleSubmitForm} style={this.state.submitDisabled ? { backgroundColor: "#dcdcdc "} : {}} disabled={this.state.submitDisabled}>Send to George Campbell</button>
+        <style jsx>{`
+          .contact-message {
+            width: 100%;
+            height: 14em;
+            min-height: 5em;
+            max-height: 1000px;
+            line-height: 1.5em;
+            resize: vertical;
+            max-width: 100%;
+            display: block;
+          }
+          .textarea-container {
+            margin-left: 0;
+          }
+          .textarea-resize {
+          }
+          label {
+            display: block;
+          }
+          input[type="text"] {
+            width: 100%;
+            display: block;
+            min-height: 2em;
+            margin-bottom: 0.5em;
+            font-family: 'Hind Guntur',sans-serif;
+            font-size: 16px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            border: 1px solid rgb(169,169,169);
+            padding-top: 5.5px;
+          }
+          .name-stuff {
+            margin: 20px 0;
+          }
+          #btn-contact-send {
+            margin-top: 20px;
+          }
+        `}</style>
+    </Resizer>
     </React.Fragment>);
   }
 }

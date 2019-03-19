@@ -2,6 +2,7 @@ import { Fragment, Component } from 'react';
 import parseElapsedTime from '../utils/parseElapsedTime.js';
 import { sortableHandle } from 'react-sortable-hoc';
 import ColourPicker from '../components/ColourPicker.js';
+import Resizer from '../components/Resizer.js';
 const DragHandle = sortableHandle(() => (
   <Fragment>
   <img src="/static/drag_indicator.svg" alt="Drag me" className="drag-icon"/>
@@ -91,15 +92,16 @@ class Timer extends Component {
     }
   }
 }
+
 export default class Task extends Component {
   constructor(props){
     super(props);
     this.state = {
-      windowWidth: 320
+      windowWidth: 320,
+      textarea: null
     }
   }
   componentDidMount(){
-    this.resize();
     window.addEventListener("resize", ()=>this.resize(), false);
   }
   componentWillUnmount(){
@@ -122,130 +124,144 @@ export default class Task extends Component {
     `;
 
     return (
-      <li>
-        <div className="task" style={{
-            backgroundColor: colour,
-            background: linearGradient
-          }}>
-          <DragHandle/>
-          <div className="textarea-container">
-            <textarea
-              id={"task"+(this.props.id+1)}
-              style={{
-                width: this.props.textarea.width,
-                height: this.props.textarea.height
-              }}
-              value={this.props.children}
-              onChange={this.props.editDescription}
-              onMouseUp={(e)=>{
-                this.props.editTextareaSize(e.target.style.width, e.target.style.height);
-              }}
+      <Resizer
+        textarea={this.state.textarea}
+        editTextareaSize={this.props.editTextareaSize}
+        >
+        <li>
+          <div className="task"
+            style={{
+              backgroundColor: colour,
+              background: linearGradient
+            }}
+            >
+            <DragHandle/>
+            <div className="textarea-container">
+              <textarea
+                id={"task"+(this.props.id+1)}
+                ref={(el)=>{
+                  if(this.state.textarea === null){
+                    this.setState({
+                      textarea: el
+                    });
+                  }
+                }}
+                style={{
+                  width: this.props.textarea.width,
+                  height: this.props.textarea.height
+                }}
+                value={this.props.children}
+                onChange={this.props.editDescription}
+                />
+              <img src="/static/arrow_right.svg" alt="resize" className="textarea-resize"/>
+            </div>
+            <Timer
+              elapsedTime={this.props.elapsedTime}
+              toggleTimer={this.props.toggleTimer}
+              paused={this.props.paused}
+              windowWidth={this.state.windowWidth}
               />
-            <img src="/static/arrow_right.svg" alt="resize" className="textarea-resize"/>
-          </div>
-          <Timer
-            elapsedTime={this.props.elapsedTime}
-            toggleTimer={this.props.toggleTimer}
-            paused={this.props.paused}
-            windowWidth={this.state.windowWidth}
-            />
-          <i className="material-icons delete-task"
-            onClick={()=>{
-              this.props.confirmDelete()
-            }}
-          >delete_forever</i>
-        <i className="material-icons fill-colour"
-            onClick={()=>{
-              //open/close colour picker
-              this.props.openColourPicker();
-            }}
-          >color_lens</i>
-        {this.props.colour.pickerOpen ?
-            <ColourPicker
-              changeTaskColour={this.props.changeTaskColour}
-              handleClickOutside={()=>{
-                this.props.closeColourPicker();
-                //a little hack just to ensure this runs after openColourPicker if clicking over the open icon
-                setTimeout(()=>{
-                  this.props.closeColourPicker();
-                }, 50);
+            <i className="material-icons delete-task"
+              onClick={()=>{
+                this.props.confirmDelete()
               }}
-            />
-            : null}
-        </div>
+            >delete_forever</i>
+          <i className="material-icons fill-colour"
+              onClick={()=>{
+                //open/close colour picker
+                this.props.openColourPicker();
+              }}
+            >color_lens</i>
+          {this.props.colour.pickerOpen ?
+              <ColourPicker
+                changeTaskColour={this.props.changeTaskColour}
+                handleClickOutside={()=>{
+                  this.props.closeColourPicker();
+                  //a little hack just to ensure this runs after openColourPicker if clicking over the open icon
+                  setTimeout(()=>{
+                    this.props.closeColourPicker();
+                  }, 50);
+                }}
+              />
+              : null}
+          </div>
 
-        <style jsx>{`
-          .timer {
-            padding-top: 5px;
-            text-align: center;
-            width: 100%;
-          }
-          .delete-task {
-            position: absolute;
-            right: -43px;
-            top: 0;
-            font-size: 38px;
-            color: white;
-            cursor: pointer;
-            user-select: none;
-          }
-          .fill-colour {
-            position: absolute;
-            right: -43px;
-            bottom: 0;
-            font-size: 38px;
-            color: white;
-            cursor: pointer;
-            user-select: none;
-          }
-          .fill-colour:hover {
-            background: linear-gradient(to right, red, yellow, green, blue, violet);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-          }
-          .delete-task:hover {
-            color: rgb(255,100,100);
-          }
-          .task {
-            background-color: #ffffff;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            color: black;
-            margin-bottom: 16px;
-            position: relative;
-          }
-          .task > div {
-            display: flex;
-            align-items: center;
-          }
-          .drag-icon {
-            font-size: 38px;
-            position: absolute;
-            margin-left: -20px;
-            height: calc(100% - 38px * 2);
-            transform: translate(0, 50%);
-            cursor: grab;
-            user-select: none;
-          }
-          @media only screen and (max-width: 820px) {
-            textarea {
-              resize: vertical;
-              max-width: 100%;
-              width: 100% !important;
-              min-width: calc(100% - 14px);
+          <style jsx>{`
+            .textarea-resize {
+              touch-action: none;
+            }
+            .timer {
+              padding-top: 5px;
+              text-align: center;
+              width: 100%;
+            }
+            .delete-task {
+              position: absolute;
+              right: -43px;
+              top: 0;
+              font-size: 38px;
+              color: white;
+              cursor: pointer;
+              user-select: none;
+            }
+            .fill-colour {
+              position: absolute;
+              right: -43px;
+              bottom: 0;
+              font-size: 38px;
+              color: white;
+              cursor: pointer;
+              user-select: none;
+            }
+            .fill-colour:hover {
+              background: linear-gradient(to right, red, yellow, green, blue, violet);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            }
+            .delete-task:hover {
+              color: rgb(255,100,100);
+            }
+            .task {
+              background-color: #ffffff;
+              border-radius: 8px;
+              display: flex;
+              justify-content: space-between;
+              padding: 20px;
+              color: black;
+              margin-bottom: 16px;
+              position: relative;
             }
             .task > div {
-              margin-bottom: 0.25em;
+              display: flex;
+              align-items: center;
             }
-            .task > div:last-child {
-              margin-bottom: 0;
+            .drag-icon {
+              font-size: 38px;
+              position: absolute;
+              margin-left: -20px;
+              height: calc(100% - 38px * 2);
+              transform: translate(0, 50%);
+              cursor: grab;
+              user-select: none;
             }
-          }
-        `}
-        </style>
-      </li>
+            @media only screen and (max-width: 820px) {
+              textarea {
+                resize: vertical;
+                max-width: 100%;
+                width: 100% !important;
+                min-width: calc(100% - 14px);
+              }
+              .task > div {
+                margin-bottom: 0.25em;
+              }
+              .task > div:last-child {
+                margin-bottom: 0;
+              }
+            }
+          `}
+          </style>
+        </li>
+      </Resizer>
     );
   }
 }

@@ -290,6 +290,7 @@ class Layout extends Component {
             border-radius: 3px;
             border: 1px solid rgb(169, 169, 169);
             box-sizing: border-box;
+            resize: none;
           }
           .textarea-container {
             margin-left: 17px;
