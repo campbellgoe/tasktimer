@@ -9,7 +9,7 @@ import {
 } from 'react-sortable-hoc';
 import { confirmAlert } from 'react-confirm-alert';
 const SortableTask = SortableElement((taskData) => <Task {...taskData}>{taskData.children}</Task>);
-const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask, openColourPicker, closeColourPicker, changeTaskColour}) => {
+const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, editTextareaSize, deleteTask, openColourPicker, closeColourPicker, changeTaskColour, windowWidth}) => {
   return (
     <ul>
       {tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea, colour}, i) => {
@@ -48,6 +48,7 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
           openColourPicker={()=>openColourPicker(i)}
           closeColourPicker={()=>closeColourPicker(i)}
           changeTaskColour={(r,g,b)=>changeTaskColour(r,g,b,i)}
+          windowWidth={windowWidth}
           >
             {description}
           </SortableTask>
@@ -81,7 +82,8 @@ export default class App extends Component {
   constructor(){
     super();
     this.state = {
-      tasks: [this.createTask("Task description here", 0)]
+      tasks: [this.createTask("Task description here", 0)],
+      windowWidth: 1400
     }
   }
   saveTasks(){
@@ -111,7 +113,14 @@ export default class App extends Component {
     }
     return tasks;
   }
+  resize = () => {
+    this.setState({
+      windowWidth: window.innerWidth
+    })
+  }
   componentDidMount(){
+    this.resize();
+    window.addEventListener("resize", ()=>this.resize(), false);
     //update the timers every 1 second
     this.intervalId = setInterval(()=>{
       this.updateTaskTimer(true);
@@ -139,6 +148,7 @@ export default class App extends Component {
   }
   componentWillUnmount(){
     clearInterval(this.intervalId);
+    window.removeEventListener("resize", ()=>this.resize(), false);
   }
   createTask(description = "", elapsedTime = 0){
     return {
@@ -173,6 +183,7 @@ export default class App extends Component {
       useDragHandle
       tasks={this.state.tasks}
       onSortEnd={this.onSortEnd}
+      windowWidth={this.state.windowWidth}
       editDescription={(e, i)=>{
         const tasks = [...this.state.tasks];
         tasks[i].description = e.target.value;

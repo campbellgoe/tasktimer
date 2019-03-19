@@ -44,6 +44,7 @@ class Timer extends Component {
         }
       `}</style>
     </div>);
+    console.log("window width:", this.props.windowWidth);
     if(this.props.windowWidth > 820){
       return (<React.Fragment>
         {TimerJSX}
@@ -97,20 +98,8 @@ export default class Task extends Component {
   constructor(props){
     super(props);
     this.state = {
-      windowWidth: 320,
       textarea: null
     }
-  }
-  componentDidMount(){
-    window.addEventListener("resize", ()=>this.resize(), false);
-  }
-  componentWillUnmount(){
-    window.removeEventListener("resize", ()=>this.resize(), false);
-  }
-  resize = () => {
-    this.setState({
-      windowWidth: window.innerWidth
-    })
   }
   render(){
     const pcSeconds = parseInt(this.props.elapsedTime/1000)%(60*25)/(60*25)*100;//25 minutes counter
@@ -159,7 +148,7 @@ export default class Task extends Component {
               elapsedTime={this.props.elapsedTime}
               toggleTimer={this.props.toggleTimer}
               paused={this.props.paused}
-              windowWidth={this.state.windowWidth}
+              windowWidth={this.props.windowWidth}
               />
             <i className="material-icons delete-task"
               onClick={()=>{
