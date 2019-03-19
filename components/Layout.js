@@ -76,9 +76,7 @@ class Layout extends Component {
         </section>
         <style jsx global>{`
           @import url('https://fonts.googleapis.com/css?family=Hind+Guntur|Josefin+Sans:700');
-          /* stupid class name for toast container. beware it may change
-          with updates to the package */
-          .css-1p3cd4g {
+          body > div:last-child {
             max-width: 100%;
           }
           body.react-confirm-alert-body-element {

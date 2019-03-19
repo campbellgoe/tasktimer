@@ -56,7 +56,7 @@ class ContactForm extends Component {
     const { toastManager } = this.props;
     toastManager.add(msg, {
       appearance: 'warning',
-      autoDismiss: false,
+      autoDismiss: true,
     })
   }
   handleSubmitForm = () => {
