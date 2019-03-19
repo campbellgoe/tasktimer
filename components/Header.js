@@ -46,13 +46,22 @@ const Header = ({ children, router, href }) => {
             nav {
               margin-bottom: 80px;
             }
+            @media only screen and (max-width: 460px) {
+              a {
+                margin-right: 0;
+              }
+              nav {
+                justify-content: space-evenly;
+                display: flex;
+              }
+            }
             @media only screen and (max-width: 360px) {
               div {
                 display: flex;
                 justify-content: space-between;
               }
-              a {
-                margin-right: 0;
+              nav {
+                justify-content: space-between;
               }
             }
           `

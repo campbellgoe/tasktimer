@@ -342,6 +342,11 @@ class Layout extends Component {
           button:active {
             background: #ff1cb4;
           }
+          @media only screen and (min-width: 1200px) {
+            .about {
+              max-width: 600px;
+            }
+          }
           @media only screen and (max-width: 1600px) {
             .container {
               margin: 80px 15%;
@@ -371,9 +376,25 @@ class Layout extends Component {
               flex-direction: column;
             }
           }
-          @media only screen and (max-width: 420px) {
+          @media only screen and (max-width: 460px) {
             footer {
               font-size: 5vw;
+            }
+            .container {
+              margin: 80px 16px;
+            }
+            main ul {
+              margin-right: 32px;
+            }
+            .task {
+              padding: 10px 10px 10px 10px !important;
+            }
+            .drag-icon {
+              font-size: 28px !important;
+              height: 28px !important;
+            }
+            .task * {
+              font-size: 14px;
             }
           }
         `}</style>

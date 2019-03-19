@@ -20,7 +20,96 @@ const DragHandle = sortableHandle(() => (
   `}
   </style>
 </Fragment>));
+class Timer extends Component {
+  render(){
+    const TimerJSX = (<div className="timer-text">
+      <span className="timer">{parseElapsedTime(this.props.elapsedTime)}</span>
+    </div>);
+    const PauseBtnJSX = (<div className="timer-btn" onClick={this.props.toggleTimer}>
+      {
+        this.props.paused ?
+        <i className="material-icons btn-timer">play_arrow</i> :
+        <i className="material-icons btn-timer">pause</i>
+      }
+      <style jsx>{`
+        .btn-timer {
+          font-size: 38px;
+          cursor: pointer;
+          margin: 0 auto;
+          user-select: none;
+        }
+        .btn-timer:hover {
+          color: rgb(169, 169, 169);
+        }
+      `}</style>
+    </div>);
+    if(this.props.windowWidth > 820){
+      return (<React.Fragment>
+        {TimerJSX}
+        {PauseBtnJSX}
+        <style jsx global>{`
+            .timer-container {
+              margin-left: 17px;
+              display: flex;
+              flex-direction: column;
+            }
+            .timer-text, .timer-btn {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+            .timer-text > span {
+              height: 20px;
+            }
+        `}</style>
+      </React.Fragment>);
+    } else {
+      return (
+      <div className="timer-container">
+        {TimerJSX}
+        {PauseBtnJSX}
+        <style jsx global>{`
+            .timer-container {
+              margin-left: 17px;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              padding-top: 5px;
+            }
+            .timer-text, .timer-btn {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              margin-left: auto;
+            }
+            .task {
+              padding-bottom: 10px !important;
+            }
+        `}</style>
+      </div>
+    );
+    }
+  }
+}
 export default class Task extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      windowWidth: 320
+    }
+  }
+  componentDidMount(){
+    this.resize();
+    window.addEventListener("resize", ()=>this.resize(), false);
+  }
+  componentWillUnmount(){
+    window.removeEventListener("resize", ()=>this.resize(), false);
+  }
+  resize = () => {
+    this.setState({
+      windowWidth: window.innerWidth
+    })
+  }
   render(){
     const pcSeconds = parseInt(this.props.elapsedTime/1000)%(60*25)/(60*25)*100;//25 minutes counter
     const pcMinutes = parseInt(this.props.elapsedTime/1000)%(60*5)/(60*5)*100;//5 minutes counter
@@ -31,6 +120,7 @@ export default class Task extends Component {
     linear-gradient(180deg, ${colour} calc(100% - 10px), ${colourTransparent} calc(100% - 10px), ${colourTransparent} calc(100% - 20px)),
     linear-gradient(90deg,  ${colour} 0%, rgba(255,156,237,1) ${pcSeconds}%,  ${colour} ${pcSeconds}%,  ${colour} 100%)
     `;
+
     return (
       <li>
         <div className="task" style={{
@@ -53,16 +143,12 @@ export default class Task extends Component {
               />
             <img src="/static/arrow_right.svg" alt="resize" className="textarea-resize"/>
           </div>
-          <div>
-            <span className="timer">{parseElapsedTime(this.props.elapsedTime)}</span>
-          </div>
-          <div onClick={this.props.toggleTimer}>
-            {
-              this.props.paused ?
-              <i className="material-icons btn-timer">play_arrow</i> :
-              <i className="material-icons btn-timer">pause</i>
-            }
-          </div>
+          <Timer
+            elapsedTime={this.props.elapsedTime}
+            toggleTimer={this.props.toggleTimer}
+            paused={this.props.paused}
+            windowWidth={this.state.windowWidth}
+            />
           <i className="material-icons delete-task"
             onClick={()=>{
               this.props.confirmDelete()
@@ -142,15 +228,6 @@ export default class Task extends Component {
             transform: translate(0, 50%);
             cursor: grab;
             user-select: none;
-          }
-          .btn-timer {
-            font-size: 38px;
-            cursor: pointer;
-            margin: 0 auto;
-            user-select: none;
-          }
-          .btn-timer:hover {
-            color: rgb(169, 169, 169);
           }
           @media only screen and (max-width: 820px) {
             textarea {
