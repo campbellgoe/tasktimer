@@ -44,7 +44,6 @@ class Timer extends Component {
         }
       `}</style>
     </div>);
-    console.log("window width:", this.props.windowWidth);
     if(this.props.windowWidth > 820){
       return (<React.Fragment>
         {TimerJSX}

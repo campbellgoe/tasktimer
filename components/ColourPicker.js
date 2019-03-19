@@ -17,7 +17,6 @@ class ColourPicker extends Component {
             '#BEDADC', '#C4DEF6', '#D4C4FB'
           ]}
           onChangeComplete={ ({rgb})=>{
-            console.log("rgb:", rgb);
             this.props.changeTaskColour(rgb.r, rgb.g, rgb.b);
           }}
         />

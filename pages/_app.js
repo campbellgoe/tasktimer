@@ -5,7 +5,6 @@ import Head from 'next/head';
 import ReactGA from 'react-ga';
 class MyApp extends App {
   componentDidMount(){
-    console.log("google analytics...");
     ReactGA.initialize('UA-136541952-1');
     ReactGA.pageview(window.location.pathname);
   }

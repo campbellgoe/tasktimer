@@ -86,7 +86,6 @@ class ContactForm extends Component {
       }).then(res=>{
         return res.json();
       }).then(res=>{
-        console.log("response:", res);
         if(res.success){
           this.onSuccessMessage(res.message);
         } else {
