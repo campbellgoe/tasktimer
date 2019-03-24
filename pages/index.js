@@ -226,6 +226,10 @@ export default class App extends Component {
           tasks
         });
         this.saveTasks();
+        ReactGA.event({
+          category: 'Tasks',
+          action: 'Delete task'
+        });
       }}
       openColourPicker={(i)=>{
         const tasks = [...this.state.tasks];
