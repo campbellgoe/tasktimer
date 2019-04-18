@@ -1,6 +1,7 @@
 import Header from './Header';
 import Link from 'next/link';
 import { Component } from 'react';
+import ReactGA from 'react-ga';
 const bottomColour = '#ffb1f9';
 const topColour = '#30b3ff';
 class Layout extends Component {
@@ -12,6 +13,13 @@ class Layout extends Component {
       topColour
     }
   }
+  componentDidCatch(error, info) {
+    ReactGA.event({
+      category: "Error",
+      action: "Layout - "+info,
+      value: Date.now()
+    })
+  }
   componentDidMount(){
     let nightModeOn = localStorage.getItem("night_mode_on");
     if(nightModeOn !== null) {
@@ -20,26 +28,42 @@ class Layout extends Component {
     }
   }
   toggleNightMode = (val) => {
-    let nightModeOn;
-    if(typeof val == 'boolean'){
-      nightModeOn = val;
-    } else {
-      nightModeOn = !this.state.nightModeOn;
+    try {
+      let nightModeOn;
+      if(typeof val == 'boolean'){
+        nightModeOn = val;
+      } else {
+        nightModeOn = !this.state.nightModeOn;
+      }
+      if(nightModeOn){
+        this.setState({
+          nightModeOn: nightModeOn,
+          bottomColour: "#000000",
+          topColour: "#000000"
+        });
+        ReactGA.event({
+          category: "Night mode",
+          action: "Toggle on"
+        })
+      } else {
+        this.setState({
+          nightModeOn: nightModeOn,
+          bottomColour,
+          topColour
+        });
+        ReactGA.event({
+          category: "Night mode",
+          action: "Toggle off"
+        })
+      }
+      localStorage.setItem("night_mode_on", JSON.stringify(nightModeOn));
+    } catch(err){
+      ReactGA.event({
+        category: "Error",
+        action: "toggleNightMode",
+        value: Date.now()
+      })
     }
-    if(nightModeOn){
-      this.setState({
-        nightModeOn: nightModeOn,
-        bottomColour: "#000000",
-        topColour: "#000000"
-      });
-    } else {
-      this.setState({
-        nightModeOn: nightModeOn,
-        bottomColour,
-        topColour
-      });
-    }
-    localStorage.setItem("night_mode_on", JSON.stringify(nightModeOn));
   }
   render(){
     return (

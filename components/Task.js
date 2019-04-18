@@ -22,6 +22,13 @@ const DragHandle = sortableHandle(() => (
   </style>
 </Fragment>));
 class Timer extends Component {
+  componentDidCatch(error, info) {
+    ReactGA.event({
+      category: "Error",
+      action: "Timer - "+info,
+      value: Date.now()
+    })
+  }
   render(){
     const TimerJSX = (<div className="timer-text">
       <span className="timer">{parseElapsedTime(this.props.elapsedTime)}</span>

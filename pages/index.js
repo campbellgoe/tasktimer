@@ -24,7 +24,7 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
           editDescription={(e)=>editDescription(e,i)}
           toggleTimer={()=>toggleTimer(i)}
           textarea={textarea}
-          editTextareaSize={(w,h)=>editTextareaSize(w,h,i)}
+          editTextareaSize={(w,h)=>editTextareaSize(w,h,description,elapsedTime,paused,timeLastStarted,textarea,colour,i)}
           confirmDelete={()=>{
             confirmAlert({
               customUI: ({ onClose }) => {
@@ -85,6 +85,13 @@ export default class App extends Component {
       tasks: [this.createTask("Task description here", 0)],
       windowWidth: 1400
     }
+  }
+  componentDidCatch(error, info) {
+    ReactGA.event({
+      category: "Error",
+      action: "App - "+info,
+      value: Date.now()
+    })
   }
   saveTasks(){
     localStorage.setItem("tasks", JSON.stringify(this.state.tasks));
@@ -185,93 +192,169 @@ export default class App extends Component {
       onSortEnd={this.onSortEnd}
       windowWidth={this.state.windowWidth}
       editDescription={(e, i)=>{
-        const tasks = [...this.state.tasks];
-        tasks[i].description = e.target.value;
-        this.setState({
-          tasks
-        });
-        this.saveTasks();
+        try {
+          const tasks = [...this.state.tasks];
+          tasks[i].description = e.target.value;
+          this.setState({
+            tasks
+          });
+          this.saveTasks();
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "editDescription",
+            value: Date.now()
+          })
+        }
       }}
       toggleTimer={(i)=>{
-        const tasks = [...this.state.tasks];
-        const paused = !tasks[i].paused;
-        tasks[i].paused = paused;
-        if(!paused){
-          tasks[i].timeLastStarted = Date.now();//set last started time to now
+        try {
+          const tasks = [...this.state.tasks];
+          const paused = !tasks[i].paused;
+          tasks[i].paused = paused;
+          if(!paused){
+            tasks[i].timeLastStarted = Date.now();//set last started time to now
+          }
+          ReactGA.event({
+            category: 'Tasks',
+            action: 'Toggle timer',
+            value: paused ? 0 : 1
+          });
+          this.setState({
+            tasks
+          });
+          this.saveTasks();
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "toggleTimer",
+            value: Date.now()
+          })
         }
-        ReactGA.event({
-          category: 'Tasks',
-          action: 'Toggle timer'
-        });
-        this.setState({
-          tasks
-        });
-        this.saveTasks();
       }}
-      editTextareaSize={(w,h,i)=>{
-        const tasks = [...this.state.tasks];
-        tasks[i].textarea = {
-          width: w,
-          height: h
+      editTextareaSize={(w,h,description,elapsedTime,paused,timeLastStarted,textarea,colour,i)=>{
+        try {
+          const tasks = [...this.state.tasks];
+          //because of some error that occured (should do some refactoring and debugging of this)
+          if(!tasks[i]){
+            tasks[i] = {
+              description,
+              elapsedTime,
+              paused,
+              timeLastStarted,
+              textarea,
+              colour
+            };
+          }
+          tasks[i].textarea = {
+            width: w,
+            height: h
+          }
+          this.setState({
+            tasks
+          });
+          this.saveTasks();
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "editTextareaSize",
+            value: Date.now()
+          })
         }
-        this.setState({
-          tasks
-        });
-        this.saveTasks();
       }}
       deleteTask={(i)=>{
-        const tasks = [...this.state.tasks];
-        tasks.splice(i, 1);
-        this.setState({
-          tasks
-        });
-        this.saveTasks();
-        ReactGA.event({
-          category: 'Tasks',
-          action: 'Delete task'
-        });
+        try {
+          const tasks = [...this.state.tasks];
+          tasks.splice(i, 1);
+          this.setState({
+            tasks
+          });
+          this.saveTasks();
+          ReactGA.event({
+            category: 'Tasks',
+            action: 'Delete task'
+          });
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "deleteTask",
+            value: Date.now()
+          })
+        }
       }}
       openColourPicker={(i)=>{
-        const tasks = [...this.state.tasks];
-        tasks[i].colour.pickerOpen = true;
-        this.setState({
-          tasks
-        });
-        this.saveTasks();
+        try {
+          const tasks = [...this.state.tasks];
+          tasks[i].colour.pickerOpen = true;
+          this.setState({
+            tasks
+          });
+          this.saveTasks();
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "openColourPicker",
+            value: Date.now()
+          })
+        }
       }}
       closeColourPicker={(i)=>{
-        const tasks = [...this.state.tasks];
-        tasks[i].colour.pickerOpen = false;
-        this.setState({
-          tasks
-        });
-        this.saveTasks();
+        try {
+          const tasks = [...this.state.tasks];
+          tasks[i].colour.pickerOpen = false;
+          this.setState({
+            tasks
+          });
+          this.saveTasks();
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "closeColourPicker",
+            value: Date.now()
+          })
+        }
       }}
       changeTaskColour={(r,g,b,i)=>{
-        const tasks = [...this.state.tasks];
-        tasks[i].colour = {
-          pickerOpen: tasks[i].colour.pickerOpen,
-          r,
-          g,
-          b
+        try {
+          const tasks = [...this.state.tasks];
+          tasks[i].colour = {
+            pickerOpen: tasks[i].colour.pickerOpen,
+            r,
+            g,
+            b
+          }
+          this.setState({
+            tasks
+          });
+          this.saveTasks();
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "changeTaskColour",
+            value: Date.now()
+          })
         }
-        this.setState({
-          tasks
-        });
-        this.saveTasks();
       }}
       />
       <NewTaskButton onClick={()=>{
-        ReactGA.event({
-          category: 'Tasks',
-          action: 'Create Task'
-        });
-        this.setState(({tasks})=>{
-          return {
-            tasks: [...tasks, this.createTask("", 0)]
-          };
-        });
-        this.saveTasks();
+        try {
+          ReactGA.event({
+            category: 'Tasks',
+            action: 'Create Task'
+          });
+          this.setState(({tasks})=>{
+            return {
+              tasks: [...tasks, this.createTask("", 0)]
+            };
+          });
+          this.saveTasks();
+        } catch(err){
+          ReactGA.event({
+            category: "Error",
+            action: "create new task",
+            value: Date.now()
+          })
+        }
       }}/>
       <style jsx>{`
 

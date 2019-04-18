@@ -1,6 +1,13 @@
 import { Component } from 'react';
 //resize an element by dragging the bottom right corner of it
 export default class Resizer extends Component {
+  componentDidCatch(error, info) {
+    ReactGA.event({
+      category: "Error",
+      action: "Resizer - "+info,
+      value: Date.now()
+    })
+  }
   componentDidMount(){
     window.addEventListener("touchmove", (e)=>this.onMove(e), {passive: false});
     window.addEventListener("touchend", (e)=>this.onUp(e), false);

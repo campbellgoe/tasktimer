@@ -14,6 +14,13 @@ class ContactForm extends Component {
       textarea: null
     }
   }
+  componentDidCatch(error, info) {
+    ReactGA.event({
+      category: "Error",
+      action: "ContactForm - "+info,
+      value: Date.now()
+    })
+  }
   handleMessageKeyUp = (e) => {
     const value = e.target.value;
     if(value.length > 30){

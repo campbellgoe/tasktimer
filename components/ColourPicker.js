@@ -2,6 +2,13 @@ import { Component } from 'react';
 import { GithubPicker } from 'react-color';
 const enhanceWithClickOutside = require('react-click-outside');
 class ColourPicker extends Component {
+  componentDidCatch(error, info) {
+    ReactGA.event({
+      category: "Error",
+      action: "ColourPicker - "+info,
+      value: Date.now()
+    })
+  }
   handleClickOutside() {
     this.props.handleClickOutside();
   }
