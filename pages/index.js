@@ -96,7 +96,7 @@ export default class App extends Component {
   saveTasks(){
     localStorage.setItem("tasks", JSON.stringify(this.state.tasks));
   }
-  updateTaskTimer(doSetState){
+  updateTaskTimer(doSetState, cb = Function.prototype){
     const tasks = this.state.tasks.map(({description, elapsedTime, paused, timeLastStarted, textarea, colour})=>{
       if(paused) return {description, elapsedTime, paused, timeLastStarted, textarea, colour};
       return {
@@ -111,7 +111,7 @@ export default class App extends Component {
     if(doSetState){
       this.setState({
         tasks
-      });
+      }, cb);
     }
     if(typeof tasks[0] !== 'undefined' && tasks[0].elapsedTime > 0){
       document.title = "TaskTimer - "+(parseElapsedTime(tasks[0].elapsedTime));
@@ -130,8 +130,7 @@ export default class App extends Component {
     window.addEventListener("resize", ()=>this.resize(), false);
     //update the timers every 1 second
     this.intervalId = setInterval(()=>{
-      this.updateTaskTimer(true);
-      this.saveTasks();
+      this.updateTaskTimer(true, this.saveTasks);
     }, 100);
     //load tasks from local storage
     let localTasks = localStorage.getItem("tasks");
@@ -197,8 +196,7 @@ export default class App extends Component {
           tasks[i].description = e.target.value;
           this.setState({
             tasks
-          });
-          this.saveTasks();
+          }, this.saveTasks);
         } catch(err){
           ReactGA.event({
             category: "Error",
@@ -222,8 +220,7 @@ export default class App extends Component {
           });
           this.setState({
             tasks
-          });
-          this.saveTasks();
+          }, this.saveTasks);
         } catch(err){
           ReactGA.event({
             category: "Error",
@@ -242,8 +239,7 @@ export default class App extends Component {
             }
             this.setState({
               tasks
-            });
-            this.saveTasks();
+            }, this.saveTasks);
           }
         } catch(err){
           ReactGA.event({
@@ -259,10 +255,7 @@ export default class App extends Component {
           tasks.splice(i, 1);
           this.setState({
             tasks
-          }, () => {
-            console.log("saving tasks...", this.state.tasks);
-            this.saveTasks();
-          });
+          }, this.saveTasks);
           ReactGA.event({
             category: 'Tasks',
             action: 'Delete task'
@@ -281,8 +274,7 @@ export default class App extends Component {
           tasks[i].colour.pickerOpen = true;
           this.setState({
             tasks
-          });
-          this.saveTasks();
+          }, this.saveTasks);
         } catch(err){
           ReactGA.event({
             category: "Error",
@@ -297,8 +289,7 @@ export default class App extends Component {
           tasks[i].colour.pickerOpen = false;
           this.setState({
             tasks
-          });
-          this.saveTasks();
+          }, this.saveTasks);
         } catch(err){
           ReactGA.event({
             category: "Error",
@@ -318,8 +309,7 @@ export default class App extends Component {
           }
           this.setState({
             tasks
-          });
-          this.saveTasks();
+          }, this.saveTasks);
         } catch(err){
           ReactGA.event({
             category: "Error",
@@ -339,8 +329,7 @@ export default class App extends Component {
             return {
               tasks: [...tasks, this.createTask("", 0)]
             };
-          });
-          this.saveTasks();
+          }, this.saveTasks);
         } catch(err){
           ReactGA.event({
             category: "Error",
