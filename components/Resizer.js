@@ -15,6 +15,7 @@ export default class Resizer extends Component {
   }
   componentWillUnmount(){
     window.removeEventListener("touchmove", (e)=>this.onMove(e), {passive: false});
+    window.removeEventListener("touchend", (e)=>this.onUp(e), false);
     window.removeEventListener("mouseup", (e)=>this.onUp(e), false);
   }
   onUp = (e) => {

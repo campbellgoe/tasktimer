@@ -24,7 +24,7 @@ const SortableTasks = SortableContainer(({tasks, editDescription, toggleTimer, e
           editDescription={(e)=>editDescription(e,i)}
           toggleTimer={()=>toggleTimer(i)}
           textarea={textarea}
-          editTextareaSize={(w,h)=>editTextareaSize(w,h,description,elapsedTime,paused,timeLastStarted,textarea,colour,i)}
+          editTextareaSize={(w,h)=>editTextareaSize(w,h,i)}
           confirmDelete={()=>{
             confirmAlert({
               customUI: ({ onClose }) => {
@@ -232,28 +232,19 @@ export default class App extends Component {
           })
         }
       }}
-      editTextareaSize={(w,h,description,elapsedTime,paused,timeLastStarted,textarea,colour,i)=>{
+      editTextareaSize={(w,h,i)=>{
         try {
           const tasks = [...this.state.tasks];
-          //because of some error that occured (should do some refactoring and debugging of this)
-          if(!tasks[i]){
-            tasks[i] = {
-              description,
-              elapsedTime,
-              paused,
-              timeLastStarted,
-              textarea,
-              colour
-            };
+          if(tasks[i]){
+            tasks[i].textarea = {
+              width: w,
+              height: h
+            }
+            this.setState({
+              tasks
+            });
+            this.saveTasks();
           }
-          tasks[i].textarea = {
-            width: w,
-            height: h
-          }
-          this.setState({
-            tasks
-          });
-          this.saveTasks();
         } catch(err){
           ReactGA.event({
             category: "Error",
@@ -268,8 +259,10 @@ export default class App extends Component {
           tasks.splice(i, 1);
           this.setState({
             tasks
+          }, () => {
+            console.log("saving tasks...", this.state.tasks);
+            this.saveTasks();
           });
-          this.saveTasks();
           ReactGA.event({
             category: 'Tasks',
             action: 'Delete task'
