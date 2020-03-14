@@ -4,7 +4,6 @@ import Router, { withRouter } from 'next/router'
 const Header = ({ children, router, href }) => {
   const isHome = router.pathname === "/";
   const isAbout = router.pathname === "/about";
-  const isContact = router.pathname === "/contact";
   const linearGradient = "linear-gradient(180deg, rgb(255,255,255,0) 80%, rgba(255,255,255,1) 80%, rgba(255,255,255,1) 100%)";
   //#72512a golden brown
   return (
@@ -15,9 +14,6 @@ const Header = ({ children, router, href }) => {
           </Link>
           <Link href="/about">
             <a id="about">About</a>
-          </Link>
-          <Link href="/contact">
-            <a id="contact">Contact</a>
           </Link>
         </nav>
         <style jsx>{
@@ -39,9 +35,6 @@ const Header = ({ children, router, href }) => {
             }
             #about {
               background: ${isAbout ? linearGradient : ""};
-            }
-            #contact {
-              background: ${isContact ? linearGradient : ""};
             }
             nav {
               margin-bottom: 80px;
