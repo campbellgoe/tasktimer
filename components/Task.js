@@ -5,13 +5,15 @@ import ColourPicker from '../components/ColourPicker.js';
 import Resizer from '../components/Resizer.js';
 const DragHandle = sortableHandle(() => (
   <Fragment>
-  <img src="/static/drag_indicator.svg" alt="Drag me" className="drag-icon"/>
+  <img src="/static/drag_indicator.svg" alt="Drag me" className="drag-icon" draggable="false"/>
   <style jsx>{`
     .drag-icon {
       font-size: 38px;
       position: absolute;
       cursor: grab;
       user-select: none;
+      user-drag: none;
+      -moz-user-drag: none;
       left: 0;
       top: 0;
       bottom: 0;
