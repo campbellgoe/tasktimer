@@ -28,7 +28,7 @@
     "react-toast-notifications": "^1.4.0"
   },
   "devDependencies": {
-    "mocha": "^6.1.4",
+    "mocha": "^10.2.0",
     "now-env": "^3.1.0",
     "puppeteer": "^1.13.0"
   }
